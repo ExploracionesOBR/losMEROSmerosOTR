@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extractor de Datos Logística</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f4f9; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1 { font-size: 20px; color: #333; text-align: center; }
+        textarea { width: 100%; height: 200px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: monospace; resize: vertical; box-sizing: border-box; }
+        .control-group { margin: 15px 0; text-align: center; }
+        button { padding: 10px 25px; background-color: #00a650; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin: 5px; }
+        button:hover { background-color: #008f45; }
+        .btn-copy { background-color: #2196F3; }
+        .btn-copy:hover { background-color: #1976D2; }
+        .btn-close { background-color: #FF9800; }
+        .btn-close:hover { background-color: #F57C00; }
+        .file-upload { margin-top: 10px; }
+        #progress { margin-top: 15px; color: #666; font-weight: bold; }
+        .info-box { background: #e7f3ff; border-left: 4px solid #2196F3; padding: 10px; margin: 20px 0; font-size: 14px; }
+        
+        /* Estilos para la tabla con scroll */
+        #preview-container { margin-top: 20px; display: none; }
+        #preview-table-wrapper { 
+            overflow-x: auto; 
+            overflow-y: auto; 
+            max-height: 450px; /* Scroll vertical */
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+        }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid #eee; white-space: nowrap; }
+        th { background-color: #f8f9fa; color: #333; font-weight: 600; position: sticky; top: 0; z-index: 10; }
+        tr:hover { background-color: #f1f1f1; }
+        #count-msg { margin-top: 10px; font-size: 14px; color: #333; }
+        
+        /* Estilos para el grupo de botones */
+        .btn-group {
+            margin-top: 20px;
+            text-align: center;
+            padding-top: 10px;
+        }
+        .copied-msg { color: #00a650; font-weight: bold; margin-left: 10px; display: none; }
+
+        /* --- Estilos del Modal de Filtros --- */
+        #filterModal {
+            display: none; 
+            position: fixed; 
+            z-index: 9999; 
+            left: 0; top: 0; 
+            width: 100%; height: 100%; 
+            background-color: rgba(0,0,0,0.5); 
+            align-items: center; 
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            padding: 30px;
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            text-align: left;
+        }
+        .modal-content h3 { margin-top: 0; color: #333; }
+        .modal-content label { display: block; margin: 15px 0 5px; font-weight: bold; color: #555; }
+        .modal-content select { 
+            width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; 
+            font-size: 14px; margin-bottom: 10px; 
+        }
+        .modal-buttons { text-align: right; margin-top: 20px; }
+        .modal-buttons .btn-secondary { background-color: #aaa; }
+        .modal-buttons .btn-secondary:hover { background-color: #888; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🛠️ Extractor de Datos OTR LOS MEROS MEROS!!</h1>
+    
+    <div class="control-group">
+        <label for="sourceInput">Pega el código HTML aquí:</label><br><br>
+        <textarea id="sourceInput" placeholder="Pega aquí el código HTML extraído de la página..."></textarea>
+        
+        <div class="file-upload">
+            <span>O sube tu archivo .txt: </span>
+            <input type="file" id="fileInput" accept=".txt,.html,.htm">
+        </div>
+        
+        <br><br>
+        <button id="processBtn">🔄 Procesar y descargar CSV</button>
+        <div id="progress"></div>
+
+        <!-- BOTONES DE COPIA AL PORTAPAPELES -->
+        <div class="btn-group">
+            <button class="btn-copy" id="copyAssignBtn">📋 Copiar ASIGNACION</button>
+            <button class="btn-copy" id="copySPORHBtn">📋 Copiar SPORH</button>
+            <button class="btn-close" id="copyReportBtn">📋 Copiar REPORTE DE CIERRE</button>
+            <span id="copyStatus" class="copied-msg">✅ ¡Copiado al portapapeles!</span>
+        </div>
+    </div>
+
+    <!-- Contenedor para la previsualización de la tabla -->
+    <div id="preview-container">
+        <h3>Vista previa de todos los datos extraídos:</h3>
+        <div id="preview-table-wrapper">
+            <table id="preview-table">
+                <thead id="preview-thead"></thead>
+                <tbody id="preview-tbody"></tbody>
+            </table>
+        </div>
+        <div id="count-msg"></div>
+    </div>
+</div>
+
+<!-- MODAL DE FILTROS PARA SPORH -->
+<div id="filterModal">
+    <div class="modal-content">
+        <h3>Filtrar datos para SPORH</h3>
+        <p style="font-size: 13px; color: #666;">Selecciona las opciones y haz clic en "Copiar".</p>
+        
+        <label for="filterMLP">Filtrar por MLP:</label>
+        <select id="filterMLP"></select>
+
+        <label for="filterTop10">Cantidad de registros:</label>
+        <select id="filterTop10">
+            <option value="Todos">Todos</option>
+            <option value="Top10">Los 10 con más pendientes</option>
+        </select>
+
+        <div class="modal-buttons">
+            <button class="btn-secondary" id="modalCancelBtn">Cancelar</button>
+            <button class="btn-copy" id="modalConfirmBtn">Copiar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let globalData = [];
+
+    document.getElementById('fileInput').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('sourceInput').value = e.target.result;
+        };
+        reader.readAsText(file);
+    });
+
+    document.getElementById('processBtn').addEventListener('click', function() {
+        const htmlString = document.getElementById('sourceInput').value;
+        const progress = document.getElementById('progress');
+        const previewContainer = document.getElementById('preview-container');
+        const previewTbody = document.getElementById('preview-tbody');
+        const previewThead = document.getElementById('preview-thead');
+        const countMsg = document.getElementById('count-msg');
+        const copyStatus = document.getElementById('copyStatus');
+        copyStatus.style.display = 'none';
+        
+        if (!htmlString.trim()) {
+            alert("Por favor, pega el código HTML o sube el archivo .txt primero.");
+            return;
+        }
+
+        progress.innerHTML = "⏳ Procesando datos...";
+        previewContainer.style.display = 'none';
+
+        try {
+            const datos = parseHTML(htmlString);
+            if (datos.length === 0) {
+                progress.innerHTML = "❌ No se encontraron filas. Asegúrate de que el HTML pegado contiene la estructura de la lista.";
+                return;
+            }
+            
+            globalData = datos;
+            
+            renderPreview(datos, previewThead, previewTbody, countMsg);
+            previewContainer.style.display = 'block';
+            
+            downloadCSV(datos);
+            progress.innerHTML = `✅ ¡Completado! Se han extraído <b>${datos.length}</b> registros y descargado el CSV.`;
+        } catch (error) {
+            console.error(error);
+            let errorMsg = "❌ Hubo un error al procesar.";
+            if (error && error.message) {
+                errorMsg += " Detalle: " + error.message;
+            } else {
+                errorMsg += " Detalle: " + String(error);
+            }
+            progress.innerHTML = errorMsg;
+        }
+    });
+
+    // --- Funciones auxiliares de tiempo ---
+    function parseTimeToMinutes(timeStr) {
+        if (!timeStr || timeStr.includes('N/A')) return 0;
+        const cleanStr = timeStr.replace(/[^0-9:]/g, '').trim();
+        if (!cleanStr) return 0;
+        const parts = cleanStr.split(':');
+        if (parts.length !== 2) return 0;
+        const h = parseInt(parts[0], 10);
+        const m = parseInt(parts[1], 10);
+        if (isNaN(h) || isNaN(m)) return 0;
+        return (h * 60) + m;
+    }
+
+    function minutesToTimeString(totalMinutes) {
+        const isNegative = totalMinutes < 0;
+        const absMinutes = Math.abs(totalMinutes);
+        const h = Math.floor(absMinutes / 60);
+        const m = absMinutes % 60;
+        const timeString = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')} hs`;
+        return isNegative ? `-${timeString}` : timeString;
+    }
+
+    // --- Lógica principal de extracción ---
+    function parseHTML(htmlString) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlString, 'text/html');
+        const items = doc.querySelectorAll('li.monitoring-row');
+        const resultados = [];
+
+        items.forEach(row => {
+            try {
+                const idRuta = row.querySelector('.monitoring-row__bold')?.innerText.trim() || '';
+                const nombreConductor = row.querySelector('.monitoring-row-details__driver-name')?.innerText.trim() || '';
+                
+                const licenciaTexto = row.querySelector('.monitoring-row-details__license')?.innerText.trim() || '';
+                const licenciaParts = licenciaTexto.split('·').map(s => s.trim());
+                const mlp = licenciaParts[0] || '';
+                const placas = licenciaParts[1] || '';
+
+                const badges = row.querySelectorAll('.monitoring-row-details__data .andes-badge__content');
+                let categorias = [];
+                badges.forEach(b => categorias.push(b.innerText.trim()));
+                const tipoUnidad = categorias.length > 0 ? categorias[0].split('|')[0].trim() : '';
+                
+                const porcentaje = row.querySelector('[data-testid="percent-testid"]')?.innerText.trim() || '';
+                
+                const sprTexto = row.querySelector('.monitoring-row-shipments__packages.andes-typography--color-primary')?.innerText.trim() || '';
+                
+                // CORRECCIÓN AQUÍ: Se añadió el "?" para hacer la "s" opcional en plural/singular
+                const regexSPR = /(\d+)\s*pendientes?,\s*(\d+)\s*fallidos?,\s*(\d+)\s*exitosos?/i;
+                
+                const match = sprTexto.match(regexSPR);
+                let pendientes = 0, fallidos = 0, entregados = 0;
+                if (match) {
+                    pendientes = parseInt(match[1], 10);
+                    fallidos = parseInt(match[2], 10);
+                    entregados = parseInt(match[3], 10);
+                }
+
+                const estado = row.querySelector('.monitoring-row-details__name-container p')?.innerText.trim() || '';
+
+                let ozh = '', orh = '';
+                const metricas = row.querySelectorAll('.metric-box');
+                metricas.forEach(m => {
+                    const label = m.querySelector('.metric-box__title-principal')?.innerText.trim() || '';
+                    const value = m.querySelector('.metric-box__value-principal .andes-typography')?.innerText.trim() || '';
+                    
+                    if (label.includes('OZH')) ozh = value;
+                    else if (label.includes('ORH')) orh = value;
+                });
+
+                const ozhMinutes = parseTimeToMinutes(ozh);
+                const orhMinutes = parseTimeToMinutes(orh);
+                const steamOutCalculated = minutesToTimeString(orhMinutes - ozhMinutes);
+
+                const sprTotal = pendientes + fallidos + entregados;
+
+                resultados.push({
+                    'ID_Ruta': idRuta,
+                    'Conductor': nombreConductor,
+                    'MLP': mlp,
+                    'Placas': placas,
+                    'TIPO_DE_UNIDAD': tipoUnidad,
+                    'Categorias': categorias.join(' | '),
+                    '%_Avance': porcentaje,
+                    'SPR_Detalle': sprTexto,
+                    'Pendientes': pendientes,
+                    'Fallidos': fallidos,
+                    'Entregados': entregados,
+                    'SPR_Total': sprTotal,
+                    'OZH_Zona_Entrega': ozh,
+                    'ORH_Ruta': orh,
+                    'Steam_Out': steamOutCalculated,
+                    'Estado': estado
+                });
+            } catch (e) {
+                console.warn('Fila omitida por error de parseo:', e.message);
+            }
+        });
+        return resultados;
+    }
+
+    // --- Vista previa ---
+    function renderPreview(data, thead, tbody, msg) {
+        if (data.length === 0) return;
+        const headers = ['ID_Ruta', 'Conductor', 'MLP', 'Placas', 'TIPO_DE_UNIDAD', '%_Avance', 'SPR_Detalle', 'Fallidos', 'Entregados', 'OZH_Zona_Entrega', 'ORH_Ruta', 'Steam_Out'];
+        
+        let headerHTML = '<tr>';
+        headers.forEach(h => {
+            headerHTML += `<th>${h.replace(/_/g, ' ')}</th>`;
+        });
+        headerHTML += '</tr>';
+        thead.innerHTML = headerHTML;
+
+        let bodyHTML = '';
+        data.forEach(row => {
+            bodyHTML += '<tr>';
+            headers.forEach(h => {
+                bodyHTML += `<td>${row[h] || ''}</td>`;
+            });
+            bodyHTML += '</tr>';
+        });
+        tbody.innerHTML = bodyHTML;
+        
+        msg.innerHTML = `Se han extraído <b>${data.length}</b> registros. OTR LOS MEROS MEROS.`;
+    }
+
+    // --- Copiar al portapapeles ---
+    function fallbackCopyTextToClipboard(text, statusElement) {
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.top = "-1000px";
+        textArea.style.left = "-1000px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            var successful = document.execCommand('copy');
+            if (successful) {
+                statusElement.style.display = 'inline';
+                setTimeout(() => { statusElement.style.display = 'none'; }, 3000);
+            } else {
+                alert('No se pudo copiar al portapapeles usando el método alternativo.');
+            }
+        } catch (err) {
+            alert('No se pudo copiar al portapapeles.');
+        }
+        document.body.removeChild(textArea);
+    }
+
+    function copyToClipboard(text, statusElement) {
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(() => {
+                statusElement.style.display = 'inline';
+                setTimeout(() => { statusElement.style.display = 'none'; }, 3000);
+            }).catch(err => {
+                console.warn('Falló el método moderno, usando el alternativo:', err);
+                fallbackCopyTextToClipboard(text, statusElement);
+            });
+        } else {
+            fallbackCopyTextToClipboard(text, statusElement);
+        }
+    }
+
+    // --- Formatos de copia ---
+    function formatAssign(data) {
+        let result = `ID_RUTA\tPLACAS\tMLP\tDRIVER\n`;
+        data.forEach(row => {
+            result += `${String(row['ID_Ruta'])}\t${String(row['Placas'])}\t${String(row['MLP'])}\t${String(row['Conductor'])}\n`;
+        });
+        return result;
+    }
+
+    function formatSPORH(data) {
+        let result = `ID_RUTA\tPLACAS\tDRIVER\tAVANCE\tSPR DETALLES\tSPR\tCOMERCIALES\tRESIDENCIALES\tOZH\tORH\tSTEAM OUT\n`;
+        data.forEach(row => {
+            result += `${String(row['ID_Ruta'])}\t${String(row['Placas'])}\t${String(row['Conductor'])}\t${String(row['%_Avance'])}\t${String(row['SPR_Detalle'])}\t${String(row['SPR_Total'])}\t\t\t${String(row['OZH_Zona_Entrega'])}\t${String(row['ORH_Ruta'])}\t${String(row['Steam_Out'])}\n`;
+        });
+        return result;
+    }
+
+    function formatCloseReport(data) {
+        let result = `ID_RUTA\tMLP\tTIPO DE UNIDAD\tDRIVER\tFALLIDOS\tENTREGADOS\n`;
+        data.forEach(row => {
+            result += `${String(row['ID_Ruta'])}\t${String(row['MLP'])}\t${String(row['TIPO_DE_UNIDAD'])}\t${String(row['Conductor'])}\t${String(row['Fallidos'])}\t${String(row['Entregados'])}\n`;
+        });
+        return result;
+    }
+
+    // --- Lógica del Modal y Filtros para SPORH ---
+    const modal = document.getElementById('filterModal');
+    const filterMLP = document.getElementById('filterMLP');
+    const filterTop10 = document.getElementById('filterTop10');
+    
+    document.getElementById('copySPORHBtn').addEventListener('click', function() {
+        if (globalData.length === 0) { 
+            alert('Primero debes procesar los datos con el botón verde.'); 
+            return; 
+        }
+        
+        const mlpList = [...new Set(globalData.map(row => row['MLP'].trim()))].filter(mlp => mlp !== '').sort();
+        
+        filterMLP.innerHTML = '';
+        const optionAll = document.createElement('option');
+        optionAll.value = 'Todos';
+        optionAll.textContent = 'Todos';
+        filterMLP.appendChild(optionAll);
+
+        mlpList.forEach(mlp => {
+            const option = document.createElement('option');
+            option.value = mlp;
+            option.textContent = mlp;
+            filterMLP.appendChild(option);
+        });
+
+        modal.style.display = 'flex';
+    });
+
+    document.getElementById('modalCancelBtn').addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+    window.addEventListener('click', function(event) {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    document.getElementById('modalConfirmBtn').addEventListener('click', function() {
+        const selectedMLP = filterMLP.value;
+        const selectedTop10 = filterTop10.value;
+        const copyStatus = document.getElementById('copyStatus');
+
+        let filteredData = [...globalData];
+
+        if (selectedMLP !== 'Todos') {
+            filteredData = filteredData.filter(row => row['MLP'] === selectedMLP);
+        }
+
+        if (selectedTop10 === 'Top10') {
+            filteredData.sort((a, b) => b['Pendientes'] - a['Pendientes']);
+            filteredData = filteredData.slice(0, 10);
+        }
+
+        if (filteredData.length === 0) {
+            alert('No se encontraron registros con los filtros seleccionados.');
+            return;
+        }
+
+        copyToClipboard(formatSPORH(filteredData), copyStatus);
+        modal.style.display = 'none';
+    });
+
+    // --- Eventos del resto de botones de copia ---
+    document.getElementById('copyAssignBtn').addEventListener('click', function() {
+        if (globalData.length === 0) { alert('Primero debes procesar los datos con el botón verde.'); return; }
+        copyToClipboard(formatAssign(globalData), document.getElementById('copyStatus'));
+    });
+
+    document.getElementById('copyReportBtn').addEventListener('click', function() {
+        if (globalData.length === 0) { alert('Primero debes procesar los datos con el botón verde.'); return; }
+        copyToClipboard(formatCloseReport(globalData), document.getElementById('copyStatus'));
+    });
+
+    // --- Descarga robusta del CSV ---
+    function downloadCSV(data) {
+        const headers = ['ID_Ruta', 'Conductor', 'MLP', 'Placas', 'TIPO_DE_UNIDAD', 'Categorias', '%_Avance', 'SPR_Detalle', 'Pendientes', 'Fallidos', 'Entregados', 'SPR_Total', 'OZH_Zona_Entrega', 'ORH_Ruta', 'Steam_Out', 'Estado'];
+        
+        let csvContent = headers.join(',') + '\n';
+        
+        data.forEach(row => {
+            let rowArray = headers.map(header => {
+                let value = String(row[header] || ''); 
+                value = value.replace(/"/g, '""'); 
+                return `"${value}"`;
+            });
+            csvContent += rowArray.join(',') + '\n';
+        });
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", `Rutas_Logistica_${new Date().toISOString().slice(0,10)}.csv`);
+        
+        document.body.appendChild(link);
+        link.click();
+
+        setTimeout(() => {
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }, 150);
+    }
+</script>
+
+</body>
+</html>
