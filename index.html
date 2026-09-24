@@ -3,530 +3,1376 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Extractor de Datos Logística + Dashboard</title>
+<title>OTR LOS MEROS MEROSSS!!</title>
 <style>
-body {font-family:'Segoe UI',Arial,sans-serif;padding:20px;margin:0;min-height:100vh;background:linear-gradient(135deg,#1c2333,#0d1117);}
-.container {max-width:1100px;margin:0 auto;background:rgba(255,255,255,0.95);padding:20px;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,0.1);}
-h1 {font-size:22px;color:#333;text-align:center;}
-textarea {width:100%;height:200px;padding:10px;border:1px solid #ddd;border-radius:4px;font-family:monospace;resize:vertical;box-sizing:border-box;}
-.control-group {margin:15px 0;text-align:center;}
-button {padding:10px 25px;background-color:#00a650;color:white;border:none;border-radius:4px;cursor:pointer;font-size:16px;margin:5px;}
-button:hover {background-color:#008f45;}
-.btn-copy {background-color:#2196F3;} .btn-copy:hover {background-color:#1976D2;}
-.btn-close {background-color:#FF9800;} .btn-close:hover {background-color:#F57C00;}
-.btn-dash {background-color:#673AB7;} .btn-dash:hover {background-color:#512DA8;}
-.btn-download {background-color:#0288d1;} .btn-download:hover {background-color:#01579b;}
-.file-upload {margin-top:10px;}
-#progress {margin-top:15px;color:#666;font-weight:bold;}
-.btn-group {margin-top:20px;text-align:center;padding-top:10px;}
-.copied-msg {color:#00a650;font-weight:bold;margin-left:10px;display:none;}
-#preview-container {margin-top:20px;display:none;}
-#preview-table-wrapper {overflow:auto;max-height:450px;border:1px solid #ddd;border-radius:4px;}
-table {width:100%;border-collapse:collapse;font-size:13px;}
-th,td {padding:8px 12px;text-align:left;border-bottom:1px solid #eee;white-space:nowrap;}
-th {background-color:#f8f9fa;color:#333;font-weight:600;position:sticky;top:0;z-index:10;}
-tr:hover {background-color:#f1f1f1;}
-#count-msg {margin-top:10px;font-size:14px;color:#333;}
-#filterModal {display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.5);align-items:center;justify-content:center;}
-.modal-content {background-color:#fefefe;padding:30px;border-radius:8px;width:400px;max-width:90%;box-shadow:0 4px 15px rgba(0,0,0,0.3);text-align:left;}
-.modal-content h3 {margin-top:0;color:#333;}
-.modal-content label {display:block;margin:15px 0 5px;font-weight:bold;color:#555;}
-.modal-content select {width:100%;padding:8px;border-radius:4px;border:1px solid #ccc;font-size:14px;margin-bottom:10px;}
-.modal-buttons {text-align:right;margin-top:20px;}
-.modal-buttons .btn-secondary {background-color:#aaa;} .modal-buttons .btn-secondary:hover {background-color:#888;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh;}
+::-webkit-scrollbar{width:8px;height:8px;}
+::-webkit-scrollbar-track{background:#161b22;}
+::-webkit-scrollbar-thumb{background:#30363d;border-radius:4px;}
+::-webkit-scrollbar-thumb:hover{background:#484f58;}
 
-/* ============ DASHBOARD (letras grandes) ============ */
-#dashOverlay {position:fixed;inset:0;background:#0d1117;color:#e6e6e6;overflow:auto;display:none;z-index:10000;padding:18px;font-size:15px;}
-.dash-wrap {max-width:1600px;margin:0 auto;}
-.dash-header {display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;}
-.dash-title {font-size:26px;font-weight:800;}
-.dash-sub {font-size:14px;color:#9aa4b2;width:100%;}
-.dash-actions button {font-size:15px;padding:9px 18px;margin:4px;}
-.kpi-row {display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin:16px 0;}
-.kpi {background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 16px;}
-.kpi .lbl {font-size:12px;letter-spacing:1px;color:#9aa4b2;text-transform:uppercase;}
-.kpi .val {font-size:32px;font-weight:800;margin:6px 0 2px;}
-.kpi .sub {font-size:12px;color:#9aa4b2;}
-.kpi.ok .val {color:#3fd68f;} .kpi.bad .val {color:#ff6b6b;} .kpi.warn .val {color:#ffc861;}
-.dash-filter {display:flex;align-items:center;gap:12px;margin:10px 0 16px;flex-wrap:wrap;}
-.dash-filter label {font-size:15px;font-weight:600;}
-.dash-filter select {padding:8px 12px;font-size:15px;border-radius:6px;border:1px solid #30363d;background:#161b22;color:#e6e6e6;}
-.dash-filter .chk {display:flex;align-items:center;gap:6px;font-size:14px;}
-.dash-body {display:grid;grid-template-columns:2.2fr 1fr;gap:16px;}
-.dash-panel {background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;}
-.dash-panel h3 {margin:0 0 12px;font-size:17px;letter-spacing:1px;}
-#mlpTable {width:100%;border-collapse:collapse;font-size:14.5px;}
-#mlpTable th,#mlpTable td {padding:10px 12px;text-align:left;border-bottom:1px solid #262d38;white-space:nowrap;}
-#mlpTable th {background:#1f2630;color:#c9d1d9;font-weight:700;font-size:13px;letter-spacing:1px;}
-#mlpTable tr.mlpraw {cursor:pointer;}
-#mlpTable tr.mlpraw:hover {background:#1c2330;}
-#mlpTable td.mlpname {font-weight:800;color:#58a6ff;font-size:15px;}
-.bar {display:inline-block;height:10px;border-radius:5px;background:#ff6b6b;vertical-align:middle;}
-.barwrap {display:inline-block;width:70px;height:10px;background:#262d38;border-radius:5px;vertical-align:middle;margin-right:8px;}
-.badge {padding:3px 8px;border-radius:5px;font-weight:800;font-size:13px;}
-.badge.g {background:#123f2a;color:#3fd68f;} .badge.y {background:#4a3b12;color:#ffc861;} .badge.r {background:#4a1a1a;color:#ff6b6b;}
-.detailrow td {background:#10151c;padding:14px;}
-.detailrow table {font-size:13.5px;}
-.detailrow th {background:#1f2630;position:static;}
-.side-block {margin-bottom:18px;}
-.side-block h4 {margin:0 0 10px;font-size:14px;color:#9aa4b2;letter-spacing:1px;}
-.off-item {display:flex;align-items:center;gap:10px;padding:9px 4px;border-bottom:1px solid #262d38;font-size:14.5px;}
-.rank {width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:#fff;}
-.rank.r1 {background:#e5484d;} .rank.r2 {background:#f5a524;} .rank.r3 {background:#ffb224;} .rank.r4 {background:#6b7280;}
-.off-main {flex:1;} .off-main b {font-size:15px;} .off-sub {font-size:12px;color:#9aa4b2;}
-.off-right {text-align:right;font-size:12.5px;color:#9aa4b2;} .off-right b {color:#ff6b6b;font-size:15px;}
-.dash-footer {margin-top:14px;font-size:12.5px;color:#9aa4b2;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.app{max-width:1500px;margin:0 auto;padding:16px;}
+.app-header{text-align:center;padding:18px 0 10px;border-bottom:1px solid #21262d;margin-bottom:0;}
+.app-header h1{font-size:24px;font-weight:800;background:linear-gradient(135deg,#58a6ff,#3fd68f);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.5px;}
+.app-header p{font-size:13px;color:#8b949e;margin-top:4px;}
+
+.tabs-nav{display:flex;gap:0;border-bottom:2px solid #21262d;margin-bottom:0;background:#161b22;border-radius:10px 10px 0 0;overflow:hidden;}
+.tab-btn{flex:1;padding:14px 20px;background:transparent;border:none;color:#8b949e;font-size:15px;font-weight:700;cursor:pointer;transition:all .25s;letter-spacing:.5px;border-bottom:3px solid transparent;position:relative;}
+.tab-btn:hover{color:#c9d1d9;background:#1c2333;}
+.tab-btn.active{color:#58a6ff;border-bottom-color:#58a6ff;background:#0d1117;}
+.tab-btn .tab-badge{display:inline-block;background:#ff6b6b;color:#fff;font-size:11px;padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:800;}
+.tab-content{display:none;background:#0d1117;border:1px solid #21262d;border-top:none;border-radius:0 0 10px 10px;padding:20px;animation:fadeIn .3s;}
+.tab-content.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+.extractor-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px;margin-bottom:16px;}
+.extractor-card h3{font-size:16px;color:#e6edf3;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+textarea#sourceInput{width:100%;height:180px;padding:12px;border:1px solid #30363d;border-radius:6px;font-family:'Cascadia Code','Fira Code',monospace;font-size:13px;resize:vertical;background:#0d1117;color:#c9d1d9;transition:border-color .2s;}
+textarea#sourceInput:focus{outline:none;border-color:#58a6ff;}
+.file-upload{margin-top:10px;font-size:13px;color:#8b949e;display:flex;align-items:center;gap:8px;}
+.file-upload input[type=file]{font-size:13px;color:#c9d1d9;}
+.btn-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;justify-content:center;}
+button{padding:10px 20px;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
+button:active{transform:scale(.97);}
+.btn-green{background:#238636;color:#fff;}.btn-green:hover{background:#2ea043;}
+.btn-blue{background:#1f6feb;color:#fff;}.btn-blue:hover{background:#388bfd;}
+.btn-orange{background:#d29922;color:#fff;}.btn-orange:hover{background:#e3b341;}
+.btn-purple{background:#8957e5;color:#fff;}.btn-purple:hover{background:#a371f7;}
+.btn-cyan{background:#0288d1;color:#fff;}.btn-cyan:hover{background:#039be5;}
+.btn-red{background:#da3633;color:#fff;}.btn-red:hover{background:#f85149;}
+.btn-gray{background:#30363d;color:#c9d1d9;}.btn-gray:hover{background:#484f58;}
+#progress{margin-top:12px;font-size:14px;color:#8b949e;text-align:center;min-height:20px;}
+.copied-msg{color:#3fd68f;font-weight:700;font-size:13px;display:none;animation:fadeIn .3s;}
+
+#preview-container{margin-top:16px;display:none;}
+#preview-container h3{font-size:15px;color:#e6edf3;margin-bottom:10px;}
+.table-wrap{overflow:auto;max-height:420px;border:1px solid #30363d;border-radius:6px;}
+table.data-table{width:100%;border-collapse:collapse;font-size:13px;}
+table.data-table th,table.data-table td{padding:8px 12px;text-align:left;border-bottom:1px solid #21262d;white-space:nowrap;}
+table.data-table th{background:#1c2333;color:#8b949e;font-weight:700;font-size:12px;letter-spacing:.5px;text-transform:uppercase;position:sticky;top:0;z-index:5;}
+table.data-table tr:hover td{background:#1c2333;}
+#count-msg{margin-top:8px;font-size:13px;color:#8b949e;}
+
+#filterModal{display:none;position:fixed;z-index:9999;inset:0;background:rgba(0,0,0,.6);align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.modal-content{background:#161b22;border:1px solid #30363d;padding:28px;border-radius:10px;width:420px;max-width:92%;box-shadow:0 8px 30px rgba(0,0,0,.5);}
+.modal-content h3{color:#e6edf3;margin-bottom:6px;}
+.modal-content p{font-size:13px;color:#8b949e;margin-bottom:14px;}
+.modal-content label{display:block;margin:12px 0 5px;font-weight:600;color:#c9d1d9;font-size:13px;}
+.modal-content select{width:100%;padding:9px;border-radius:6px;border:1px solid #30363d;font-size:14px;background:#0d1117;color:#c9d1d9;}
+.modal-buttons{text-align:right;margin-top:20px;display:flex;gap:8px;justify-content:flex-end;}
+
+.risk-header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;}
+.risk-header h2{font-size:20px;font-weight:800;color:#ffc861;display:flex;align-items:center;gap:8px;}
+.risk-filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 18px;margin-bottom:16px;}
+.risk-filters label{font-size:13px;font-weight:600;color:#8b949e;}
+.risk-filters select{padding:8px 12px;font-size:14px;border-radius:6px;border:1px solid #30363d;background:#0d1117;color:#e6edf3;min-width:180px;}
+.risk-filters .chk-label{display:flex;align-items:center;gap:6px;font-size:13px;color:#c9d1d9;cursor:pointer;}
+.risk-filters .chk-label input{accent-color:#58a6ff;width:16px;height:16px;}
+.risk-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:18px;}
+.rkpi{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 16px;text-align:center;transition:border-color .2s;}
+.rkpi:hover{border-color:#484f58;}
+.rkpi .rkpi-lbl{font-size:11px;letter-spacing:1px;color:#8b949e;text-transform:uppercase;margin-bottom:4px;}
+.rkpi .rkpi-val{font-size:28px;font-weight:800;line-height:1.1;}
+.rkpi .rkpi-sub{font-size:11px;color:#8b949e;margin-top:3px;}
+.rkpi.blue .rkpi-val{color:#58a6ff;}
+.rkpi.green .rkpi-val{color:#3fd68f;}
+.rkpi.red .rkpi-val{color:#ff6b6b;}
+.rkpi.yellow .rkpi-val{color:#ffc861;}
+.rkpi.purple .rkpi-val{color:#a371f7;}
+.rkpi.cyan .rkpi-val{color:#39d2c0;}
+
+.risk-section-title{font-size:15px;font-weight:700;color:#e6edf3;margin:18px 0 10px;display:flex;align-items:center;gap:8px;}
+.risk-table-wrap{overflow:auto;max-height:520px;border:1px solid #30363d;border-radius:8px;margin-bottom:18px;}
+table.risk-table{width:100%;border-collapse:collapse;font-size:13px;}
+table.risk-table th,table.risk-table td{padding:9px 11px;text-align:left;border-bottom:1px solid #21262d;white-space:nowrap;}
+table.risk-table th{background:#1c2333;color:#8b949e;font-weight:700;font-size:11px;letter-spacing:.5px;text-transform:uppercase;position:sticky;top:0;z-index:5;}
+table.risk-table tr:hover td{background:#1c2333;}
+table.risk-table tr.risk-high td{background:rgba(255,107,107,.07);}
+table.risk-table tr.risk-med td{background:rgba(255,200,97,.05);}
+table.risk-table tr.risk-low td{background:rgba(63,214,143,.04);}
+.risk-bar-wrap{display:inline-block;width:80px;height:8px;background:#21262d;border-radius:4px;vertical-align:middle;margin-right:6px;}
+.risk-bar{display:inline-block;height:8px;border-radius:4px;vertical-align:middle;}
+.risk-bar.high{background:#ff6b6b;}.risk-bar.med{background:#ffc861;}.risk-bar.low{background:#3fd68f;}
+.badge-risk{padding:3px 9px;border-radius:5px;font-weight:800;font-size:12px;display:inline-block;}
+.badge-risk.high{background:#4a1a1a;color:#ff6b6b;}.badge-risk.med{background:#4a3b12;color:#ffc861;}.badge-risk.low{background:#123f2a;color:#3fd68f;}
+.risk-summary-wrap{overflow:auto;border:1px solid #30363d;border-radius:8px;}
+table.risk-summary{width:100%;border-collapse:collapse;font-size:13px;}
+table.risk-summary th,table.risk-summary td{padding:10px 12px;text-align:left;border-bottom:1px solid #21262d;}
+table.risk-summary th{background:#1c2333;color:#8b949e;font-weight:700;font-size:11px;letter-spacing:.5px;text-transform:uppercase;}
+.no-data{text-align:center;padding:40px;color:#484f58;font-size:15px;}
+
+/* ============ DASHBOARD INLINE ============ */
+.dash-inline-wrap{background:#0d1117;color:#e6e6e6;padding:0;font-size:15px;}
+.dash-header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;}
+.dash-title{font-size:22px;font-weight:800;}
+.dash-sub{font-size:13px;color:#9aa4b2;width:100%;margin-top:4px;}
+.dash-actions button{font-size:14px;padding:8px 16px;margin:2px;}
+
+/* Carousel nav */
+.dash-carousel-nav{display:flex;flex-wrap:wrap;gap:6px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:8px;margin:10px 0 14px;align-items:center;}
+.dash-nav-btn{padding:8px 14px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#8b949e;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:5px;}
+.dash-nav-btn:hover{background:#1c2333;color:#e6edf3;border-color:#484f58;}
+.dash-nav-btn.active{background:#1f6feb;color:#fff;border-color:#388bfd;}
+.dash-carousel-spacer{flex:1;}
+.dash-nav-arrow{width:34px;height:34px;border-radius:50%;background:#161b22;border:1px solid #30363d;color:#8b949e;font-size:16px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all .2s;}
+.dash-nav-arrow:hover{background:#1c2333;color:#e6edf3;border-color:#58a6ff;}
+
+.dash-view{display:none;animation:fadeIn .3s;}
+.dash-view.active{display:block;}
+
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin:12px 0;}
+.kpi{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px 14px;}
+.kpi .lbl{font-size:11px;letter-spacing:1px;color:#9aa4b2;text-transform:uppercase;}
+.kpi .val{font-size:28px;font-weight:800;margin:4px 0 2px;}
+.kpi .sub{font-size:11px;color:#9aa4b2;}
+.kpi.ok .val{color:#3fd68f;}.kpi.bad .val{color:#ff6b6b;}.kpi.warn .val{color:#ffc861;}
+.kpi.big .val{font-size:42px;}
+
+.dash-filter{display:flex;align-items:center;gap:12px;margin:10px 0 14px;flex-wrap:wrap;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:10px 14px;}
+.dash-filter label{font-size:14px;font-weight:600;}
+.dash-filter select{padding:7px 11px;font-size:14px;border-radius:6px;border:1px solid #30363d;background:#0d1117;color:#e6e6e6;}
+.dash-filter .chk{display:flex;align-items:center;gap:6px;font-size:13px;}
+
+.dash-body{display:grid;grid-template-columns:2.2fr 1fr;gap:14px;}
+.dash-panel{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;}
+.dash-panel h3{margin:0 0 10px;font-size:15px;letter-spacing:1px;}
+#mlpTable{width:100%;border-collapse:collapse;font-size:13.5px;}
+#mlpTable th,#mlpTable td{padding:9px 10px;text-align:left;border-bottom:1px solid #262d38;white-space:nowrap;}
+#mlpTable th{background:#1f2630;color:#c9d1d9;font-weight:700;font-size:12px;letter-spacing:1px;}
+#mlpTable tr.mlpraw{cursor:pointer;}
+#mlpTable tr.mlpraw:hover{background:#1c2330;}
+#mlpTable td.mlpname{font-weight:800;color:#58a6ff;font-size:14px;}
+.bar{display:inline-block;height:9px;border-radius:5px;background:#ff6b6b;vertical-align:middle;}
+.barwrap{display:inline-block;width:60px;height:9px;background:#262d38;border-radius:5px;vertical-align:middle;margin-right:6px;}
+.badge{padding:3px 7px;border-radius:5px;font-weight:800;font-size:12px;}
+.badge.g{background:#123f2a;color:#3fd68f;}.badge.y{background:#4a3b12;color:#ffc861;}.badge.r{background:#4a1a1a;color:#ff6b6b;}
+.badge-risk-mlp{padding:2px 8px;border-radius:10px;font-weight:800;font-size:11px;display:inline-block;margin-left:6px;}
+.badge-risk-mlp.high{background:#4a1a1a;color:#ff6b6b;}.badge-risk-mlp.med{background:#4a3b12;color:#ffc861;}.badge-risk-mlp.low{background:#123f2a;color:#3fd68f;}
+.badge-risk-mlp.none{background:#1c2333;color:#8b949e;}
+.detailrow td{background:#10151c;padding:12px;}
+.detailrow table{font-size:13px;}
+.detailrow th{background:#1f2630;position:static;}
+.side-block{margin-bottom:16px;}
+.side-block h4{margin:0 0 8px;font-size:13px;color:#9aa4b2;letter-spacing:1px;}
+.off-item{display:flex;align-items:center;gap:10px;padding:8px 4px;border-bottom:1px solid #262d38;font-size:13.5px;}
+.rank{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#fff;}
+.rank.r1{background:#e5484d;}.rank.r2{background:#f5a524;}.rank.r3{background:#ffb224;}.rank.r4{background:#6b7280;}
+.off-main{flex:1;}.off-main b{font-size:14px;}.off-sub{font-size:11px;color:#9aa4b2;}
+.off-right{text-align:right;font-size:12px;color:#9aa4b2;}.off-right b{color:#ff6b6b;font-size:14px;}
+.dash-footer{margin-top:12px;font-size:12px;color:#9aa4b2;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+
+/* Executive dashboard */
+.exec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px;}
+.exec-card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:20px;text-align:center;transition:transform .2s,border-color .2s;}
+.exec-card:hover{transform:translateY(-2px);border-color:#484f58;}
+.exec-card .exec-icon{font-size:36px;margin-bottom:8px;}
+.exec-card .exec-val{font-size:48px;font-weight:900;line-height:1;margin:6px 0;}
+.exec-card .exec-lbl{font-size:13px;color:#8b949e;letter-spacing:1px;text-transform:uppercase;}
+.exec-card .exec-sub{font-size:12px;color:#6e7681;margin-top:4px;}
+.exec-card.c-blue .exec-val{color:#58a6ff;}
+.exec-card.c-green .exec-val{color:#3fd68f;}
+.exec-card.c-red .exec-val{color:#ff6b6b;}
+.exec-card.c-yellow .exec-val{color:#ffc861;}
+.exec-card.c-purple .exec-val{color:#a371f7;}
+.exec-card.c-cyan .exec-val{color:#39d2c0;}
+
+@media(max-width:1100px){
+  .kpi-row{grid-template-columns:repeat(3,1fr);}
+  .dash-body{grid-template-columns:1fr;}
+  .exec-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:700px){
+  .kpi-row{grid-template-columns:repeat(2,1fr);}
+  .exec-grid{grid-template-columns:1fr;}
+  .tab-btn{font-size:12px;padding:12px 6px;}
+  .dash-nav-btn{font-size:12px;padding:6px 10px;}
+}
 </style>
 </head>
 <body>
-<div class="container">
-<h1>🛠️ Extractor de Datos OTR LOS MEROS MEROS!!</h1>
-<div class="control-group">
-<label for="sourceInput">Pega el código HTML aquí:</label><br><br>
-<textarea id="sourceInput" placeholder="Pega aquí el código HTML extraído de la página..."></textarea>
-<div class="file-upload"><span>O sube tu archivo .txt: </span><input type="file" id="fileInput" accept=".txt,.html,.htm"></div>
-<br><br>
-<button id="processBtn">🔄 Procesar</button>
-<button id="downloadBtn" class="btn-download">⬇️ Descargar CSV</button>
-<div id="progress"></div>
-<div class="btn-group">
-<button class="btn-copy" id="copyAssignBtn">📋 Copiar ASIGNACION</button>
-<button class="btn-copy" id="copySPORHBtn">📋 Copiar SPORH</button>
-<button class="btn-close" id="copyReportBtn">📋 Copiar REPORTE DE CIERRE</button>
-<button class="btn-dash" id="dashBtn">📊 Ver Dashboard</button>
-<span id="copyStatus" class="copied-msg">✅ ¡Copiado al portapapeles!</span>
-</div>
-</div>
-<div id="preview-container">
-<h3>Vista previa de todos los datos extraídos:</h3>
-<div id="preview-table-wrapper"><table id="preview-table"><thead id="preview-thead"></thead><tbody id="preview-tbody"></tbody></table></div>
-<div id="count-msg"></div>
-</div>
+<div class="app">
+
+<header class="app-header">
+  <h1>🛠️ OTR LOS MEROS MEROS</h1>
+  <p>el mero hueso del caldo</p>
+</header>
+
+<nav class="tabs-nav">
+  <button class="tab-btn active" data-tab="extractor">📋 Extractor</button>
+  <button class="tab-btn" data-tab="risk">⚠️ Rutas en Riesgo <span class="tab-badge" id="riskBadge" style="display:none">0</span></button>
+  <button class="tab-btn" data-tab="dash">📊 Dashboard</button>
+</nav>
+
+<!-- ===================== TAB: EXTRACTOR ===================== -->
+<section id="tab-extractor" class="tab-content active">
+  <div class="extractor-card">
+    <h3>📥 Pegar o cargar HTML fuente</h3>
+    <textarea id="sourceInput" placeholder="Pega aquí el código HTML extraído de la página de monitoreo..."></textarea>
+    <div class="file-upload">
+      <span>📁 O sube tu archivo:</span>
+      <input type="file" id="fileInput" accept=".txt,.html,.htm">
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn-green" id="processBtn">🔄 Procesar</button>
+    <button class="btn-cyan" id="downloadBtn">⬇️ Descargar CSV</button>
+    <button class="btn-blue" id="copyAssignBtn">📋 Copiar ASIGNACIÓN</button>
+    <button class="btn-blue" id="copySPORHBtn">📋 Copiar SPORH</button>
+    <button class="btn-orange" id="copyReportBtn">📋 Copiar REPORTE CIERRE</button>
+    <span id="copyStatus" class="copied-msg">✅ ¡Copiado al portapapeles!</span>
+  </div>
+  <div id="progress"></div>
+  <div id="preview-container">
+    <h3>📄 Vista previa de datos extraídos</h3>
+    <div class="table-wrap">
+      <table class="data-table"><thead id="preview-thead"></thead><tbody id="preview-tbody"></tbody></table>
+    </div>
+    <div id="count-msg"></div>
+  </div>
+</section>
+
+<!-- ===================== TAB: RUTAS EN RIESGO ===================== -->
+<section id="tab-risk" class="tab-content">
+  <div class="risk-header">
+    <h2>⚠️ Rutas en Riesgo — Estimación RTS</h2>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn-blue" id="riskCopyBtn">📋 Copiar Resumen Riesgo</button>
+      <button class="btn-cyan" id="riskExportBtn">⬇️ Exportar CSV Riesgo</button>
+      <button class="btn-green" id="riskRefreshBtn">🔄 Recalcular</button>
+    </div>
+  </div>
+
+  <div class="risk-filters">
+    <div>
+      <label>🎯 Hora RTS:</label>
+      <select id="rtsSelect">
+        <option value="1080">RTS VALLE — 6:00 PM</option>
+        <option value="1260">RTS NAVOJOA — 9:00 PM</option>
+        <option value="1305" selected>RTS LOCAL — 9:45 PM</option>
+      </select>
+    </div>
+    <div>
+      <label>🚚 Transportadora (MLP):</label>
+      <select id="riskMLPFilter"><option value="Todos">Todas</option></select>
+    </div>
+    <label class="chk-label">
+      <input type="checkbox" id="riskExcludeDone" checked>
+      Excluir Completadas / Regreso / Pausadas
+    </label>
+  </div>
+
+  <div class="risk-kpis" id="riskKpis"></div>
+
+  <div class="risk-section-title">📋 Detalle por Ruta</div>
+  <div class="risk-table-wrap">
+    <table class="risk-table"><thead id="riskThead"></thead><tbody id="riskTbody"></tbody></table>
+  </div>
+
+  <div class="risk-section-title">📊 Resumen por Transportadora</div>
+  <div class="risk-summary-wrap">
+    <table class="risk-summary"><thead id="riskSumThead"></thead><tbody id="riskSumTbody"></tbody></table>
+  </div>
+</section>
+
+<!-- ===================== TAB: DASHBOARD (inline con carrusel) ===================== -->
+<section id="tab-dash" class="tab-content">
+  <div class="dash-inline-wrap">
+    <div class="dash-header">
+      <div>
+        <div class="dash-title">📊 Centro de Análisis — OTR LOS MEROS MEROS</div>
+        <div class="dash-sub" id="dashSub"></div>
+      </div>
+      <div class="dash-actions">
+        <button class="btn-blue" id="dashCopyResumen">📋 Copiar resumen</button>
+        <button class="btn-cyan" id="dashExportCSV">⬇️ Exportar CSV</button>
+      </div>
+    </div>
+
+    <!-- KPIs globales -->
+    <div class="kpi-row" id="kpiRow"></div>
+
+    <!-- Filtros -->
+    <div class="dash-filter">
+      <label for="mlpFilter">🚚 Transportadora:</label><select id="mlpFilter"></select>
+      <label for="dashRtsSelect">🎯 RTS:</label>
+      <select id="dashRtsSelect">
+        <option value="1080">RTS VALLE — 6:00 PM</option>
+        <option value="1260">RTS NAVOJOA — 9:00 PM</option>
+        <option value="1305" selected>RTS LOCAL — 9:45 PM</option>
+      </select>
+      <label class="chk"><input type="checkbox" id="onlyFail"> Solo con fallidos</label>
+    </div>
+
+    <!-- Carrusel de dashboards -->
+    <div class="dash-carousel-nav">
+      <button class="dash-nav-arrow" id="dashPrev" title="Anterior">‹</button>
+      <button class="dash-nav-btn active" data-dash="mlp">📊 MLP Overview</button>
+      <button class="dash-nav-btn" data-dash="rutas">🚚 Top Rutas</button>
+      <button class="dash-nav-btn" data-dash="drivers">👤 Productividad</button>
+      <button class="dash-nav-btn" data-dash="avance">📈 Análisis Avance</button>
+      <button class="dash-nav-btn" data-dash="ejecutivo">🎯 Ejecutivo</button>
+      <button class="dash-nav-arrow" id="dashNext" title="Siguiente">›</button>
+      <div class="dash-carousel-spacer"></div>
+      <span style="font-size:12px;color:#8b949e;" id="dashCounter">1 / 5</span>
+    </div>
+
+    <!-- Vista 1: MLP Overview -->
+    <div class="dash-view active" id="view-mlp">
+      <div class="dash-body">
+        <div class="dash-panel">
+          <h3>🚚 MLP ORDENADOS POR FALLIDOS <span style="font-size:11px;color:#9aa4b2;">(clic para expandir · rutas en riesgo primero)</span></h3>
+          <div style="overflow:auto;max-height:600px;">
+            <table id="mlpTable"><thead id="mlpThead"></thead><tbody id="mlpTbody"></tbody></table>
+          </div>
+        </div>
+        <div class="dash-panel">
+          <h3>🔥 TOP OFFENDERS</h3>
+          <div class="side-block"><h4>Rutas con más fallidos</h4><div id="topRoutes"></div></div>
+          <div class="side-block"><h4>Drivers con más fallidos</h4><div id="topDrivers"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vista 2: Top Rutas -->
+    <div class="dash-view" id="view-rutas">
+      <div class="dash-panel">
+        <h3>🚚 TOP RUTAS POR PENDIENTES <span style="font-size:11px;color:#9aa4b2;">(las rutas con más trabajo por delante)</span></h3>
+        <div style="overflow:auto;max-height:600px;">
+          <table id="topRutasTable"><thead id="topRutasThead"></thead><tbody id="topRutasTbody"></tbody></table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vista 3: Productividad Drivers -->
+    <div class="dash-view" id="view-drivers">
+      <div class="dash-panel">
+        <h3>👤 PRODUCTIVIDAD DE CONDUCTORES <span style="font-size:11px;color:#9aa4b2;">(ranking por paquetes entregados)</span></h3>
+        <div style="overflow:auto;max-height:600px;">
+          <table id="driversTable"><thead id="driversThead"></thead><tbody id="driversTbody"></tbody></table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vista 4: Análisis de Avance -->
+    <div class="dash-view" id="view-avance">
+      <div class="dash-panel">
+        <h3>📈 ANÁLISIS DE AVANCE <span style="font-size:11px;color:#9aa4b2;">(rutas más rezagadas primero)</span></h3>
+        <div style="overflow:auto;max-height:600px;">
+          <table id="avanceTable"><thead id="avanceThead"></thead><tbody id="avanceTbody"></tbody></table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vista 5: Ejecutivo -->
+    <div class="dash-view" id="view-ejecutivo">
+      <div class="exec-grid" id="execGrid"></div>
+      <div class="dash-panel">
+        <h3>🎯 RESUMEN EJECUTIVO</h3>
+        <div id="execSummary" style="font-size:14px;line-height:1.8;color:#c9d1d9;"></div>
+      </div>
+    </div>
+
+    <div class="dash-footer">
+      <span>% Calificación = Entregados ÷ (Total − Fallidos) × 100 · % Sin fallidos = (Total − Fallidos) ÷ Total × 100</span>
+      <span>📊 OTR LOS MEROS MEROS</span>
+    </div>
+  </div>
+</section>
+
 </div>
 
+<!-- ====== MODAL SPORH ====== -->
 <div id="filterModal"><div class="modal-content">
-<h3>Filtrar datos para SPORH</h3>
-<p style="font-size:13px;color:#666;">Selecciona las opciones y haz clic en "Copiar".</p>
-<label for="filterMLP">Filtrar por MLP:</label><select id="filterMLP"></select>
-<label for="filterTop10">Cantidad de registros:</label>
-<select id="filterTop10"><option value="Todos">Todos</option><option value="Top10">Los 10 con más pendientes</option></select>
-<div class="modal-buttons"><button class="btn-secondary" id="modalCancelBtn">Cancelar</button><button class="btn-copy" id="modalConfirmBtn">Copiar</button></div>
-</div></div>
-
-<div id="dashOverlay"><div class="dash-wrap">
-<div class="dash-header">
-<div class="dash-title">📊 DETALLE POR MLP — OTR LOS MEROS MEROS</div>
-<div class="dash-actions">
-<button class="btn-copy" id="dashCopyResumen">📋 Copiar resumen</button>
-<button class="btn-download" id="dashExportCSV">⬇️ Exportar CSV</button>
-<button class="btn-close" id="dashClose">✖ Cerrar</button>
-</div>
-<div class="dash-sub" id="dashSub"></div>
-</div>
-<div class="kpi-row" id="kpiRow"></div>
-<div class="dash-filter">
-<label for="mlpFilter">Filtrar:</label><select id="mlpFilter"></select>
-<label class="chk"><input type="checkbox" id="onlyFail"> Solo con fallidos</label>
-</div>
-<div class="dash-body">
-<div class="dash-panel">
-<h3>🚚 MLP ORDENADOS DE MAYOR A MENOR FALLIDOS <span style="font-size:12px;color:#9aa4b2;">(clic en una fila para ver su resumen)</span></h3>
-<table id="mlpTable"><thead id="mlpThead"></thead><tbody id="mlpTbody"></tbody></table>
-</div>
-<div class="dash-panel">
-<h3>🔥 TOP OFFENDERS</h3>
-<div class="side-block"><h4>Rutas con más fallidos</h4><div id="topRoutes"></div></div>
-<div class="side-block"><h4>Drivers con más fallidos</h4><div id="topDrivers"></div></div>
-</div>
-</div>
-<div class="dash-footer">
-<span>% Calificacion = Entregados ÷ (Total − Fallidos) × 100 &nbsp;|&nbsp; % Sin fallidos = (Total − Fallidos) ÷ Total × 100</span>
-<span>📊 Dashboard — texto ampliado para lectura cómoda</span>
-</div>
+  <h3>Filtrar datos para SPORH</h3>
+  <p>Selecciona las opciones y haz clic en "Copiar".</p>
+  <label for="filterMLP">Filtrar por MLP:</label><select id="filterMLP"></select>
+  <label for="filterTop10">Cantidad de registros:</label>
+  <select id="filterTop10"><option value="Todos">Todos</option><option value="Top10">Los 10 con más pendientes</option></select>
+  <div class="modal-buttons"><button class="btn-gray" id="modalCancelBtn">Cancelar</button><button class="btn-blue" id="modalConfirmBtn">Copiar</button></div>
 </div></div>
 
 <script>
+/* ================================================================
+   GLOBAL STATE
+   ================================================================ */
 let globalData = [];
 let dashAgg = [];
 let expandedMLP = null;
+let riskData = [];
+let riskTimer = null;
+let allRoutesRisk = {}; // Mapa ID_Ruta -> {atRisk, riskPct, status, pqPerHour, estimatedDeliver}
+let currentDashView = 'mlp';
+const dashViews = ['mlp','rutas','drivers','avance','ejecutivo'];
 
-document.getElementById('fileInput').addEventListener('change', function(e) {
-  const file = e.target.files[0]; if (!file) return;
+/* ================================================================
+   TABS
+   ================================================================ */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', function(){
+    const tab = this.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    this.classList.add('active');
+    document.getElementById('tab-' + tab).classList.add('active');
+    if(tab === 'risk' && globalData.length > 0) buildRisk();
+    if(tab === 'dash' && globalData.length > 0) buildDashboard();
+  });
+});
+
+/* ================================================================
+   FILE INPUT
+   ================================================================ */
+document.getElementById('fileInput').addEventListener('change', function(e){
+  const file = e.target.files[0]; if(!file) return;
   const reader = new FileReader();
-  reader.onload = function(e) { document.getElementById('sourceInput').value = e.target.result; };
+  reader.onload = function(ev){ document.getElementById('sourceInput').value = ev.target.result; };
   reader.readAsText(file);
 });
 
-/* ---------- PROCESAR (sin descargar) ---------- */
-document.getElementById('processBtn').addEventListener('click', function() {
-  const htmlString = document.getElementById('sourceInput').value;
-  const progress = document.getElementById('progress');
-  const previewContainer = document.getElementById('preview-container');
-  const previewTbody = document.getElementById('preview-tbody');
-  const previewThead = document.getElementById('preview-thead');
-  const countMsg = document.getElementById('count-msg');
-  document.getElementById('copyStatus').style.display = 'none';
-  if (!htmlString.trim()) { alert("Por favor, pega el código HTML o sube el archivo .txt primero."); return; }
-  progress.innerHTML = "⏳ Procesando datos...";
-  previewContainer.style.display = 'none';
-  try {
-    const datos = parseHTML(htmlString);
-    if (datos.length === 0) {
-      progress.innerHTML = "❌ No se encontraron filas. Asegúrate de que el HTML pegado contiene la estructura de la lista.";
-      return;
-    }
-    globalData = datos;
-    renderPreview(datos, previewThead, previewTbody, countMsg);
-    previewContainer.style.display = 'block';
-    progress.innerHTML = `✅ ¡Procesado! Se han extraído <b>${datos.length}</b> registros. Usa "⬇️ Descargar CSV" cuando lo necesites.`;
-  } catch (error) {
-    console.error(error);
-    let errorMsg = "❌ Hubo un error al procesar.";
-    errorMsg += (error && error.message) ? " Detalle: " + error.message : " Detalle: " + String(error);
-    progress.innerHTML = errorMsg;
-  }
-});
-
-/* ---------- DESCARGAR CSV (separado) ---------- */
-document.getElementById('downloadBtn').addEventListener('click', function() {
-  if (globalData.length === 0) { alert('Primero debes procesar los datos con el botón 🔄 Procesar.'); return; }
-  downloadCSV(globalData);
-  document.getElementById('progress').innerHTML = `⬇️ CSV descargado con <b>${globalData.length}</b> registros.`;
-});
-
-/* ---------- DASHBOARD ---------- */
-document.getElementById('dashBtn').addEventListener('click', function() {
-  if (globalData.length === 0) { alert('Primero debes procesar los datos con el botón 🔄 Procesar.'); return; }
-  buildDashboard();
-  document.getElementById('dashOverlay').style.display = 'block';
-});
-document.getElementById('dashClose').addEventListener('click', function() {
-  document.getElementById('dashOverlay').style.display = 'none';
-});
-document.getElementById('mlpFilter').addEventListener('change', renderDash);
-document.getElementById('onlyFail').addEventListener('change', renderDash);
-document.getElementById('dashCopyResumen').addEventListener('click', function() {
-  copyToClipboard(formatDashResumen(currentFilteredAgg()), document.getElementById('copyStatus'));
-});
-document.getElementById('dashExportCSV').addEventListener('click', function() {
-  exportDashCSV(currentFilteredAgg());
-});
-
+/* ================================================================
+   UTILITIES
+   ================================================================ */
 function num(v){ const n = parseInt(String(v).replace(/[^0-9-]/g,''),10); return isNaN(n)?0:n; }
-function pctNum(v){ const n = parseFloat(String(v).replace(/[^0-9.]/g,'')); return isNaN(n)?0:n; }
 function fmt(n){ return n.toLocaleString('en-US'); }
 function isEnviosExtra(mlp){ return String(mlp).trim().toLowerCase() === 'envios extra'; }
 
-function parseTimeToMinutes(timeStr) {
-  if (!timeStr || timeStr.includes('N/A')) return 0;
-  const cleanStr = timeStr.replace(/[^0-9:]/g, '').trim();
-  if (!cleanStr) return 0;
+function parseTimeToMinutes(timeStr){
+  if(!timeStr || timeStr.includes('N/A')) return -1;
+  const cleanStr = timeStr.replace(/[^0-9:]/g,'').trim();
+  if(!cleanStr) return -1;
   const parts = cleanStr.split(':');
-  if (parts.length !== 2) return 0;
-  const h = parseInt(parts[0], 10); const m = parseInt(parts[1], 10);
-  if (isNaN(h) || isNaN(m)) return 0;
-  return (h * 60) + m;
+  if(parts.length !== 2) return -1;
+  const h = parseInt(parts[0],10), m = parseInt(parts[1],10);
+  if(isNaN(h)||isNaN(m)) return -1;
+  return h*60+m;
 }
-function minutesToTimeString(totalMinutes) {
-  const isNegative = totalMinutes < 0;
-  const absMinutes = Math.abs(totalMinutes);
-  const h = Math.floor(absMinutes / 60); const m = absMinutes % 60;
-  const timeString = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')} hs`;
-  return isNegative ? `-${timeString}` : timeString;
+function minutesToTimeString(totalMinutes){
+  const isNeg = totalMinutes < 0;
+  const abs = Math.abs(totalMinutes);
+  const h = Math.floor(abs/60), m = abs%60;
+  const s = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')} hs`;
+  return isNeg ? '-'+s : s;
+}
+function nowMinutes(){
+  const d = new Date();
+  return d.getHours()*60 + d.getMinutes();
+}
+function nowTimeString(){
+  const d = new Date();
+  return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+function minutesToHHMM(mins){
+  if(mins < 0) return '—';
+  const h = Math.floor(mins/60), m = mins%60;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+}
+function isExcludedState(estado){
+  if(!estado) return false;
+  const s = estado.toLowerCase();
+  return s.includes('complet') || s.includes('regreso') || s.includes('paus') ||
+         s.includes('returning') || s.includes('paused') || s.includes('completed');
 }
 
-function parseHTML(htmlString) {
+/* ================================================================
+   PARSE HTML
+   ================================================================ */
+function parseHTML(htmlString){
   const parser = new DOMParser();
-  const doc = parser.parseFromString(htmlString, 'text/html');
+  const doc = parser.parseFromString(htmlString,'text/html');
   const items = doc.querySelectorAll('li.monitoring-row');
   const resultados = [];
   items.forEach(row => {
     try {
-      const idRuta = row.querySelector('.monitoring-row__bold')?.innerText.trim() || '';
-      const nombreConductor = row.querySelector('.monitoring-row-details__driver-name')?.innerText.trim() || '';
-      const licenciaTexto = row.querySelector('.monitoring-row-details__license')?.innerText.trim() || '';
-      const licenciaParts = licenciaTexto.split('·').map(s => s.trim());
-      const mlp = licenciaParts[0] || '';
-      const placas = licenciaParts[1] || '';
+      const idRuta = row.querySelector('.monitoring-row__bold')?.innerText.trim()||'';
+      const nombreConductor = row.querySelector('.monitoring-row-details__driver-name')?.innerText.trim()||'';
+      const licenciaTexto = row.querySelector('.monitoring-row-details__license')?.innerText.trim()||'';
+      const licenciaParts = licenciaTexto.split('·').map(s=>s.trim());
+      const mlp = licenciaParts[0]||'';
+      const placas = licenciaParts[1]||'';
       const badges = row.querySelectorAll('.monitoring-row-details__data .andes-badge__content');
       let categorias = [];
       badges.forEach(b => categorias.push(b.innerText.trim()));
-      const tipoUnidad = categorias.length > 0 ? categorias[0].split('|')[0].trim() : '';
-      const porcentaje = row.querySelector('[data-testid="percent-testid"]')?.innerText.trim() || '';
-      const sprTexto = row.querySelector('.monitoring-row-shipments__packages.andes-typography--color-primary')?.innerText.trim() || '';
+      const tipoUnidad = categorias.length>0 ? categorias[0].split('|')[0].trim() : '';
+      const porcentaje = row.querySelector('[data-testid="percent-testid"]')?.innerText.trim()||'';
+      const sprTexto = row.querySelector('.monitoring-row-shipments__packages.andes-typography--color-primary')?.innerText.trim()||'';
       const regexSPR = /(\d+)\s*pendientes?,\s*(\d+)\s*fallidos?,\s*(\d+)\s*exitosos?/i;
       const match = sprTexto.match(regexSPR);
-      let pendientes = 0, fallidos = 0, entregados = 0;
-      if (match) { pendientes = parseInt(match[1],10); fallidos = parseInt(match[2],10); entregados = parseInt(match[3],10); }
-      const estado = row.querySelector('.monitoring-row-details__name-container p')?.innerText.trim() || '';
-      let ozh = '', orh = '';
+      let pendientes=0, fallidos=0, entregados=0;
+      if(match){ pendientes=parseInt(match[1],10); fallidos=parseInt(match[2],10); entregados=parseInt(match[3],10); }
+      const estado = row.querySelector('.monitoring-row-details__name-container p')?.innerText.trim()||'';
+      let ozh='', orh='';
       row.querySelectorAll('.metric-box').forEach(m => {
-        const label = m.querySelector('.metric-box__title-principal')?.innerText.trim() || '';
-        const value = m.querySelector('.metric-box__value-principal .andes-typography')?.innerText.trim() || '';
-        if (label.includes('OZH')) ozh = value; else if (label.includes('ORH')) orh = value;
+        const label = m.querySelector('.metric-box__title-principal')?.innerText.trim()||'';
+        const value = m.querySelector('.metric-box__value-principal .andes-typography')?.innerText.trim()||'';
+        if(label.includes('OZH')) ozh=value; else if(label.includes('ORH')) orh=value;
       });
       const ozhMinutes = parseTimeToMinutes(ozh);
       const orhMinutes = parseTimeToMinutes(orh);
-      const steamOutCalculated = minutesToTimeString(orhMinutes - ozhMinutes);
-      const sprTotal = pendientes + fallidos + entregados;
-      resultados.push({'ID_Ruta':idRuta,'Conductor':nombreConductor,'MLP':mlp,'Placas':placas,'TIPO_DE_UNIDAD':tipoUnidad,'Categorias':categorias.join('| '),'%_Avance':porcentaje,'SPR_Detalle':sprTexto,'Pendientes':pendientes,'Fallidos':fallidos,'Entregados':entregados,'SPR_Total':sprTotal,'OZH_Zona_Entrega':ozh,'ORH_Ruta':orh,'Steam_Out':steamOutCalculated,'Estado':estado});
-    } catch (e) { console.warn('Fila omitida por error de parseo:', e.message); }
+      const steamOutCalculated = (orhMinutes>=0 && ozhMinutes>=0) ? minutesToTimeString(orhMinutes-ozhMinutes) : 'N/A';
+      const sprTotal = pendientes+fallidos+entregados;
+      resultados.push({
+        'ID_Ruta':idRuta,'Conductor':nombreConductor,'MLP':mlp,'Placas':placas,
+        'TIPO_DE_UNIDAD':tipoUnidad,'Categorias':categorias.join('| '),
+        '%_Avance':porcentaje,'SPR_Detalle':sprTexto,
+        'Pendientes':pendientes,'Fallidos':fallidos,'Entregados':entregados,
+        'SPR_Total':sprTotal,'OZH_Zona_Entrega':ozh,'ORH_Ruta':orh,
+        'Steam_Out':steamOutCalculated,'Estado':estado
+      });
+    } catch(e){ console.warn('Fila omitida:',e.message); }
   });
   return resultados;
 }
 
-function renderPreview(data, thead, tbody, msg) {
-  if (data.length === 0) return;
-  const headers = ['ID_Ruta','Conductor','MLP','Placas','TIPO_DE_UNIDAD','%_Avance','SPR_Detalle','Fallidos','Entregados','OZH_Zona_Entrega','ORH_Ruta','Steam_Out'];
-  let headerHTML = '<tr>';
-  headers.forEach(h => { headerHTML += `<th>${h.replace(/_/g,' ')}</th>`; });
-  headerHTML += '</tr>';
-  thead.innerHTML = headerHTML;
-  let bodyHTML = '';
-  data.forEach(row => {
-    bodyHTML += '<tr>';
-    headers.forEach(h => { bodyHTML += `<td>${row[h] || ''}</td>`; });
-    bodyHTML += '</tr>';
-  });
-  tbody.innerHTML = bodyHTML;
-  msg.innerHTML = `Se han extraído <b>${data.length}</b> registros. OTR LOS MEROS MEROS.`;
+/* ================================================================
+   PROCESS
+   ================================================================ */
+document.getElementById('processBtn').addEventListener('click', function(){
+  const htmlString = document.getElementById('sourceInput').value;
+  const progress = document.getElementById('progress');
+  document.getElementById('copyStatus').style.display='none';
+  if(!htmlString.trim()){ alert('Pega el código HTML o sube el archivo primero.'); return; }
+  progress.innerHTML='⏳ Procesando datos...';
+  document.getElementById('preview-container').style.display='none';
+  try {
+    const datos = parseHTML(htmlString);
+    if(datos.length===0){ progress.innerHTML='❌ No se encontraron filas.'; return; }
+    globalData = datos;
+    renderPreview(datos);
+    document.getElementById('preview-container').style.display='block';
+    progress.innerHTML=`✅ ¡Procesado! <b>${datos.length}</b> registros extraídos.`;
+    populateRiskMLPFilter();
+    computeAllRoutesRisk();
+  } catch(error){
+    progress.innerHTML='❌ Error: '+(error.message||String(error));
+  }
+});
+
+function renderPreview(data){
+  const headers=['ID_Ruta','Conductor','MLP','Placas','TIPO_DE_UNIDAD','%_Avance','SPR_Detalle','Fallidos','Entregados','OZH_Zona_Entrega','ORH_Ruta','Steam_Out','Estado'];
+  let hh='<tr>'; headers.forEach(h=>{hh+=`<th>${h.replace(/_/g,' ')}</th>`;}); hh+='</tr>';
+  document.getElementById('preview-thead').innerHTML=hh;
+  let bb='';
+  data.forEach(row=>{ bb+='<tr>'; headers.forEach(h=>{bb+=`<td>${row[h]||''}</td>`;}); bb+='</tr>'; });
+  document.getElementById('preview-tbody').innerHTML=bb;
+  document.getElementById('count-msg').innerHTML=`Se han extraído <b>${data.length}</b> registros. OTR LOS MEROS MEROS.`;
 }
 
-function aggregateByMLP(data) {
-  const map = {};
-  data.forEach(r => {
-    const mlp = (r['MLP'] || '').trim() || '(sin MLP)';
-    if (!map[mlp]) map[mlp] = {mlp, rutas:0, paq:0, entr:0, fall:0, pend:0, routes:{}, drivers:{}};
-    const m = map[mlp];
-    m.rutas += 1;
-    m.paq += num(r['SPR_Total']); m.entr += num(r['Entregados']);
-    m.fall += num(r['Fallidos']); m.pend += num(r['Pendientes']);
-    const rid = r['ID_Ruta'] || '';
-    if (!m.routes[rid]) m.routes[rid] = {id:rid, driver:r['Conductor']||'', fall:0, pend:0, paq:0, entr:0, pct:r['%_Avance']||'', estado:r['Estado']||'', placas:r['Placas']||'', tipo:r['TIPO_DE_UNIDAD']||''};
-    m.routes[rid].fall += num(r['Fallidos']); m.routes[rid].pend += num(r['Pendientes']);
-    m.routes[rid].paq += num(r['SPR_Total']); m.routes[rid].entr += num(r['Entregados']);
-    const dn = r['Conductor'] || '';
-    if (!m.drivers[dn]) m.drivers[dn] = {name:dn, fall:0, paq:0, rutas:{}};
-    m.drivers[dn].fall += num(r['Fallidos']); m.drivers[dn].paq += num(r['SPR_Total']); m.drivers[dn].rutas[rid] = 1;
+/* ================================================================
+   DOWNLOAD CSV
+   ================================================================ */
+document.getElementById('downloadBtn').addEventListener('click', function(){
+  if(globalData.length===0){ alert('Primero procesa los datos.'); return; }
+  downloadCSV(globalData);
+});
+function downloadCSV(data){
+  const headers=['ID_Ruta','Conductor','MLP','Placas','TIPO_DE_UNIDAD','Categorias','%_Avance','SPR_Detalle','Pendientes','Fallidos','Entregados','SPR_Total','OZH_Zona_Entrega','ORH_Ruta','Steam_Out','Estado'];
+  let csv=headers.join(',')+'\n';
+  data.forEach(row=>{
+    csv+=headers.map(h=>`"${String(row[h]||'').replace(/"/g,'""')}"`).join(',')+'\n';
   });
-  const arr = Object.values(map).map(m => {
-    const routes = Object.values(m.routes).sort((a,b)=>b.fall-a.fall);
-    const drivers = Object.values(m.drivers).sort((a,b)=>b.fall-a.fall);
-    const calif = (m.paq - m.fall) > 0 ? (m.entr / (m.paq - m.fall) * 100) : 0;
-    const sinF = m.paq > 0 ? ((m.paq - m.fall) / m.paq * 100) : 0;
-    return {mlp:m.mlp, rutas:m.rutas, paq:m.paq, entr:m.entr, fall:m.fall, pend:m.pend, calif, sinF, rutaImpacto:routes[0]||null, driverImpacto:drivers[0]||null, routes, drivers};
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const link=document.createElement('a');
+  link.href=URL.createObjectURL(blob);
+  link.download=`Rutas_Logistica_${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(link); link.click();
+  setTimeout(()=>{document.body.removeChild(link);},150);
+}
+
+/* ================================================================
+   COPY
+   ================================================================ */
+function fallbackCopy(text,el){
+  const ta=document.createElement('textarea'); ta.value=text;
+  ta.style.cssText='position:fixed;top:-1000px;left:-1000px;';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try{ if(document.execCommand('copy')){ el.style.display='inline'; setTimeout(()=>{el.style.display='none';},3000); } }catch(e){}
+  document.body.removeChild(ta);
+}
+function copyToClipboard(text,el){
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(text).then(()=>{el.style.display='inline';setTimeout(()=>{el.style.display='none';},3000);}).catch(()=>fallbackCopy(text,el));
+  } else fallbackCopy(text,el);
+}
+function formatAssign(data){
+  let r='ID_RUTA\tPLACAS\tMLP\tDRIVER';
+  data.forEach(row=>{r+=`\n${row['ID_Ruta']}\t${row['Placas']}\t${row['MLP']}\t${row['Conductor']}`;});
+  return r;
+}
+function formatSPORH(data){
+  let r='ID_RUTA\tPLACAS\tDRIVER\tAVANCE\tSPR DETALLES\tSPR\tCOMERCIALES\tRESIDENCIALES\tOZH\tORH\tSTEAM OUT';
+  data.forEach(row=>{r+=`\n${row['ID_Ruta']}\t${row['Placas']}\t${row['Conductor']}\t${row['%_Avance']}\t${row['SPR_Detalle']}\t${row['SPR_Total']}\t\t\t${row['OZH_Zona_Entrega']}\t${row['ORH_Ruta']}\t${row['Steam_Out']}`;});
+  return r;
+}
+function formatCloseReport(data){
+  let r='ID_RUTA\tMLP\tTIPO DE UNIDAD\tDRIVER\tFALLIDOS\tENTREGADOS';
+  data.forEach(row=>{r+=`\n${row['ID_Ruta']}\t${row['MLP']}\t${row['TIPO_DE_UNIDAD']}\t${row['Conductor']}\t${row['Fallidos']}\t${row['Entregados']}`;});
+  return r;
+}
+const copyStatusEl = document.getElementById('copyStatus');
+document.getElementById('copyAssignBtn').addEventListener('click',function(){
+  if(!globalData.length){alert('Primero procesa los datos.');return;}
+  copyToClipboard(formatAssign(globalData),copyStatusEl);
+});
+document.getElementById('copyReportBtn').addEventListener('click',function(){
+  if(!globalData.length){alert('Primero procesa los datos.');return;}
+  copyToClipboard(formatCloseReport(globalData),copyStatusEl);
+});
+
+/* ================================================================
+   MODAL SPORH
+   ================================================================ */
+const modal=document.getElementById('filterModal');
+document.getElementById('copySPORHBtn').addEventListener('click',function(){
+  if(!globalData.length){alert('Primero procesa los datos.');return;}
+  const mlpList=[...new Set(globalData.map(r=>r['MLP'].trim()))].filter(m=>m).sort();
+  const sel=document.getElementById('filterMLP'); sel.innerHTML='<option value="Todos">Todos</option>';
+  mlpList.forEach(m=>{const o=document.createElement('option');o.value=m;o.textContent=m;sel.appendChild(o);});
+  modal.style.display='flex';
+});
+document.getElementById('modalCancelBtn').addEventListener('click',()=>{modal.style.display='none';});
+window.addEventListener('click',e=>{if(e.target===modal)modal.style.display='none';});
+document.getElementById('modalConfirmBtn').addEventListener('click',function(){
+  const mlp=document.getElementById('filterMLP').value;
+  const top=document.getElementById('filterTop10').value;
+  let fd=[...globalData];
+  if(mlp!=='Todos') fd=fd.filter(r=>r['MLP']===mlp);
+  if(top==='Top10'){fd.sort((a,b)=>b['Pendientes']-a['Pendientes']);fd=fd.slice(0,10);}
+  if(!fd.length){alert('Sin registros con esos filtros.');return;}
+  copyToClipboard(formatSPORH(fd),copyStatusEl);
+  modal.style.display='none';
+});
+
+/* ================================================================
+   CALCULAR RIESGO DE TODAS LAS RUTAS (para dashboard)
+   ================================================================ */
+function computeAllRoutesRisk(){
+  const rtsMinutes = parseInt(document.getElementById('dashRtsSelect').value,10);
+  const currentMins = nowMinutes();
+  const hrsRemainingRTS = (rtsMinutes - currentMins) / 60;
+
+  allRoutesRisk = {};
+  globalData.forEach(r => {
+    const id = r['ID_Ruta'] || '';
+    if(!id) return;
+    const pendientes = num(r['Pendientes']);
+    const entregados = num(r['Entregados']);
+    const orhStr = r['ORH_Ruta'] || '';
+    const orhMinutes = parseTimeToMinutes(orhStr);
+    const orhHours = orhMinutes > 0 ? (orhMinutes / 60) : 0;
+
+    let pqPerHour = 0, minPerDelivery = 0, estimatedDeliver = 0, atRisk = 0, riskPct = 0, status = 'low';
+
+    if(orhHours > 0 && entregados > 0){
+      pqPerHour = entregados / orhHours;
+      minPerDelivery = orhMinutes / entregados;
+    }
+
+    if(hrsRemainingRTS > 0){
+      estimatedDeliver = Math.floor(pqPerHour * hrsRemainingRTS);
+      atRisk = Math.max(0, pendientes - estimatedDeliver);
+      riskPct = pendientes > 0 ? (atRisk / pendientes * 100) : 0;
+    } else {
+      atRisk = pendientes;
+      riskPct = pendientes > 0 ? 100 : 0;
+    }
+
+    if(riskPct >= 50) status = 'high';
+    else if(riskPct >= 20) status = 'med';
+    else status = 'low';
+
+    allRoutesRisk[id] = { atRisk, riskPct, status, pqPerHour, estimatedDeliver, orhHours };
+  });
+}
+
+document.getElementById('dashRtsSelect').addEventListener('change', function(){
+  if(globalData.length){
+    computeAllRoutesRisk();
+    buildDashboard();
+  }
+});
+
+/* ================================================================
+   DASHBOARD
+   ================================================================ */
+document.getElementById('mlpFilter').addEventListener('change',renderDash);
+document.getElementById('onlyFail').addEventListener('change',renderDash);
+document.getElementById('dashCopyResumen').addEventListener('click',()=>{copyToClipboard(formatDashResumen(currentFilteredAgg()),copyStatusEl);});
+document.getElementById('dashExportCSV').addEventListener('click',()=>{exportDashCSV(currentFilteredAgg());});
+
+/* Carousel navigation */
+document.querySelectorAll('.dash-nav-btn').forEach(btn => {
+  btn.addEventListener('click', function(){
+    switchDashView(this.dataset.dash);
+  });
+});
+document.getElementById('dashPrev').addEventListener('click', () => {
+  const idx = dashViews.indexOf(currentDashView);
+  const newIdx = (idx - 1 + dashViews.length) % dashViews.length;
+  switchDashView(dashViews[newIdx]);
+});
+document.getElementById('dashNext').addEventListener('click', () => {
+  const idx = dashViews.indexOf(currentDashView);
+  const newIdx = (idx + 1) % dashViews.length;
+  switchDashView(dashViews[newIdx]);
+});
+
+function switchDashView(view){
+  currentDashView = view;
+  document.querySelectorAll('.dash-nav-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.dash === view);
+  });
+  document.querySelectorAll('.dash-view').forEach(v => {
+    v.classList.toggle('active', v.id === 'view-' + view);
+  });
+  const idx = dashViews.indexOf(view);
+  document.getElementById('dashCounter').textContent = `${idx+1} / ${dashViews.length}`;
+  renderDash();
+}
+
+function aggregateByMLP(data){
+  const map={};
+  data.forEach(r=>{
+    const mlp=(r['MLP']||'').trim()||'(sin MLP)';
+    if(!map[mlp]) map[mlp]={mlp,rutas:0,paq:0,entr:0,fall:0,pend:0,routes:{},drivers:{}};
+    const m=map[mlp]; m.rutas++; m.paq+=num(r['SPR_Total']); m.entr+=num(r['Entregados']);
+    m.fall+=num(r['Fallidos']); m.pend+=num(r['Pendientes']);
+    const rid=r['ID_Ruta']||'';
+    if(!m.routes[rid]) m.routes[rid]={id:rid,driver:r['Conductor']||'',fall:0,pend:0,paq:0,entr:0,pct:r['%_Avance']||'',estado:r['Estado']||'',placas:r['Placas']||'',tipo:r['TIPO_DE_UNIDAD']||''};
+    m.routes[rid].fall+=num(r['Fallidos']); m.routes[rid].pend+=num(r['Pendientes']);
+    m.routes[rid].paq+=num(r['SPR_Total']); m.routes[rid].entr+=num(r['Entregados']);
+    const dn=r['Conductor']||'';
+    if(!m.drivers[dn]) m.drivers[dn]={name:dn,fall:0,paq:0,rutas:{}};
+    m.drivers[dn].fall+=num(r['Fallidos']); m.drivers[dn].paq+=num(r['SPR_Total']); m.drivers[dn].rutas[rid]=1;
+  });
+  const arr=Object.values(map).map(m=>{
+    const routes=Object.values(m.routes).sort((a,b)=>b.fall-a.fall);
+    const drivers=Object.values(m.drivers).sort((a,b)=>b.fall-a.fall);
+    const calif=(m.paq-m.fall)>0?(m.entr/(m.paq-m.fall)*100):0;
+    const sinF=m.paq>0?((m.paq-m.fall)/m.paq*100):0;
+    // Calcular riesgo del MLP
+    let riskHigh=0, riskMed=0, riskLow=0;
+    routes.forEach(r => {
+      const risk = allRoutesRisk[r.id];
+      if(risk){
+        if(risk.status === 'high') riskHigh++;
+        else if(risk.status === 'med') riskMed++;
+        else riskLow++;
+      }
+    });
+    let mlpRiskStatus = 'none';
+    if(riskHigh > 0) mlpRiskStatus = 'high';
+    else if(riskMed > 0) mlpRiskStatus = 'med';
+    else if(riskLow > 0) mlpRiskStatus = 'low';
+    return {mlp:m.mlp,rutas:m.rutas,paq:m.paq,entr:m.entr,fall:m.fall,pend:m.pend,calif,sinF,rutaImpacto:routes[0]||null,driverImpacto:drivers[0]||null,routes,drivers,riskHigh,riskMed,riskLow,mlpRiskStatus};
   });
   arr.sort((a,b)=>b.fall-a.fall);
   return arr;
 }
 
-function buildDashboard() {
-  dashAgg = aggregateByMLP(globalData);
-  expandedMLP = null;
-  const sel = document.getElementById('mlpFilter');
-  sel.innerHTML = '';
-  const opts = [['Todos','Todos (incluye envíos extra)'], ['MLP','MLP (ocultar envíos extra)']];
-  dashAgg.forEach(a => opts.push([a.mlp, a.mlp]));
-  opts.forEach(o => { const op = document.createElement('option'); op.value = o[0]; op.textContent = o[1]; sel.appendChild(op); });
-  document.getElementById('onlyFail').checked = false;
+function buildDashboard(){
+  computeAllRoutesRisk();
+  dashAgg=aggregateByMLP(globalData); expandedMLP=null;
+  const sel=document.getElementById('mlpFilter'); sel.innerHTML='';
+  const opts=[['Todos','Todos (incluye envíos extra)'],['MLP','MLP (ocultar envíos extra)']];
+  dashAgg.forEach(a=>opts.push([a.mlp,a.mlp]));
+  opts.forEach(o=>{const op=document.createElement('option');op.value=o[0];op.textContent=o[1];sel.appendChild(op);});
+  document.getElementById('onlyFail').checked=false;
   renderDash();
 }
 
-function currentFilteredAgg() {
-  const sel = document.getElementById('mlpFilter').value;
-  const onlyFail = document.getElementById('onlyFail').checked;
-  let rows = [...dashAgg];
-  if (sel === 'MLP') rows = rows.filter(a => !isEnviosExtra(a.mlp));
-  else if (sel !== 'Todos') rows = rows.filter(a => a.mlp === sel);
-  if (onlyFail) rows = rows.filter(a => a.fall > 0);
+function currentFilteredAgg(){
+  const sel=document.getElementById('mlpFilter').value;
+  const onlyFail=document.getElementById('onlyFail').checked;
+  let rows=[...dashAgg];
+  if(sel==='MLP') rows=rows.filter(a=>!isEnviosExtra(a.mlp));
+  else if(sel!=='Todos') rows=rows.filter(a=>a.mlp===sel);
+  if(onlyFail) rows=rows.filter(a=>a.fall>0);
   return rows;
 }
+function califBadge(v){const c=v>=95?'g':(v>=90?'y':'r');return `<span class="badge ${c}">${v.toFixed(1)}%</span>`;}
+function routeCalif(r){return (r.paq-r.fall)>0?(r.entr/(r.paq-r.fall)*100):0;}
 
-function califBadge(v) {
-  const cls = v >= 95 ? 'g' : (v >= 90 ? 'y' : 'r');
-  return `<span class="badge ${cls}">${v.toFixed(1)}%</span>`;
-}
+function renderDash(){
+  const rows=currentFilteredAgg();
+  const totPaq=rows.reduce((s,a)=>s+a.paq,0), totEntr=rows.reduce((s,a)=>s+a.entr,0);
+  const totFall=rows.reduce((s,a)=>s+a.fall,0), totPend=rows.reduce((s,a)=>s+a.pend,0);
+  const totRutas=rows.reduce((s,a)=>s+a.rutas,0);
+  const calif=(totPaq-totFall)>0?(totEntr/(totPaq-totFall)*100):0;
+  const sinF=totPaq>0?((totPaq-totFall)/totPaq*100):0;
+  const critico=rows.length?rows[0]:null;
+  const rtsLabel = document.getElementById('dashRtsSelect').options[document.getElementById('dashRtsSelect').selectedIndex].text;
 
-function renderDash() {
-  const rows = currentFilteredAgg();
-  const totPaq = rows.reduce((s,a)=>s+a.paq,0);
-  const totEntr = rows.reduce((s,a)=>s+a.entr,0);
-  const totFall = rows.reduce((s,a)=>s+a.fall,0);
-  const totPend = rows.reduce((s,a)=>s+a.pend,0);
-  const totRutas = rows.reduce((s,a)=>s+a.rutas,0);
-  const calif = (totPaq - totFall) > 0 ? (totEntr/(totPaq-totFall)*100) : 0;
-  const sinF = totPaq > 0 ? ((totPaq-totFall)/totPaq*100) : 0;
-  const critico = rows.length ? rows[0] : null;
-  document.getElementById('dashSub').innerHTML =
-    `${new Date().toLocaleString()} · ${totRutas} rutas · ${rows.length} MLP · MLP crítico: <b style="color:#ff6b6b">${critico ? critico.mlp : '—'}</b> con ${critico ? critico.fall : 0} fallidos`;
-  document.getElementById('kpiRow').innerHTML = `
+  // Total rutas en riesgo
+  const totalRiskRoutes = rows.reduce((s,a) => s + a.riskHigh + a.riskMed, 0);
+
+  document.getElementById('dashSub').innerHTML=`${new Date().toLocaleString()} · ${totRutas} rutas · ${rows.length} MLP · RTS: <b style="color:#a371f7">${rtsLabel}</b> · MLP crítico: <b style="color:#ff6b6b">${critico?critico.mlp:'—'}</b> con ${critico?critico.fall:0} fallidos · ⚠️ <b style="color:#ffc861">${totalRiskRoutes}</b> rutas en riesgo`;
+
+  document.getElementById('kpiRow').innerHTML=`
     <div class="kpi ok"><div class="lbl">% Calificación</div><div class="val">${calif.toFixed(1)}%</div><div class="sub">Entregados ÷ (Total − Fallidos)</div></div>
     <div class="kpi"><div class="lbl">Paquetes totales</div><div class="val">${fmt(totPaq)}</div><div class="sub">${totRutas} rutas · ${rows.length} MLP</div></div>
     <div class="kpi ok"><div class="lbl">Entregados</div><div class="val">${fmt(totEntr)}</div><div class="sub">${totPaq>0?(totEntr/totPaq*100).toFixed(1):0}% del total</div></div>
     <div class="kpi bad"><div class="lbl">Fallidos</div><div class="val">${fmt(totFall)}</div><div class="sub">${totPaq>0?(totFall/totPaq*100).toFixed(1):0}% del total</div></div>
     <div class="kpi warn"><div class="lbl">Pendientes</div><div class="val">${fmt(totPend)}</div><div class="sub">${totPaq>0?(totPend/totPaq*100).toFixed(1):0}% del total</div></div>
     <div class="kpi ok"><div class="lbl">% Sin fallidos</div><div class="val">${sinF.toFixed(1)}%</div><div class="sub">(Total − Fallidos) ÷ Total</div></div>`;
-  const maxFall = rows.length ? Math.max(...rows.map(a=>a.fall),1) : 1;
-  let thead = '<tr><th>#</th><th>MLP</th><th>RUTAS</th><th>PAQ.</th><th>ENTR.</th><th>FALLIDOS</th><th>PEND.</th><th>% CALIF.</th><th>RUTA MAYOR IMPACTO</th><th>DRIVER MAYOR IMPACTO</th></tr>';
-  document.getElementById('mlpThead').innerHTML = thead;
-  let body = '';
+
+  // Renderizar según la vista activa
+  if(currentDashView === 'mlp') renderMLPView(rows);
+  else if(currentDashView === 'rutas') renderTopRutasView(rows);
+  else if(currentDashView === 'drivers') renderDriversView(rows);
+  else if(currentDashView === 'avance') renderAvanceView(rows);
+  else if(currentDashView === 'ejecutivo') renderEjecutivoView(rows, {totPaq,totEntr,totFall,totPend,totRutas,calif,sinF,totalRiskRoutes});
+}
+
+/* ============ Vista 1: MLP Overview ============ */
+function renderMLPView(rows){
+  const maxFall=rows.length?Math.max(...rows.map(a=>a.fall),1):1;
+  document.getElementById('mlpThead').innerHTML='<tr><th>#</th><th>MLP</th><th>RUTAS</th><th>PAQ.</th><th>ENTR.</th><th>FALLIDOS</th><th>PEND.</th><th>% CALIF.</th><th>⚠️ RIESGO</th><th>RUTA MAYOR IMPACTO</th><th>DRIVER MAYOR IMPACTO</th></tr>';
+  let body='';
   rows.forEach((a,i) => {
-    const w = Math.round(a.fall/maxFall*100);
-    body += `<tr class="mlpraw" data-mlp="${a.mlp}">
-      <td>${i+1}</td><td class="mlpname">${a.mlp}</td><td>${a.rutas}</td><td>${fmt(a.paq)}</td><td>${fmt(a.entr)}</td>
-      <td><span class="barwrap"><span class="bar" style="width:${w}%"></span></span><b style="color:#ff6b6b">${a.fall}</b></td>
-      <td>${a.pend}</td><td>${califBadge(a.calif)}</td>
-      <td>${a.rutaImpacto ? `<b>${a.rutaImpacto.id}</b> <span style="color:#9aa4b2">(${a.rutaImpacto.fall} fall.)</span>` : '—'}</td>
-      <td>${a.driverImpacto ? `<b>${a.driverImpacto.name}</b> <span style="color:#9aa4b2">(${a.driverImpacto.fall} fall.)</span>` : '—'}</td></tr>`;
-    if (expandedMLP === a.mlp) {
-      body += `<tr class="detailrow"><td colspan="10">${detailTable(a)}</td></tr>`;
+    const w=Math.round(a.fall/maxFall*100);
+    // Badge de riesgo
+    let riskBadge = '';
+    if(a.mlpRiskStatus === 'high'){
+      riskBadge = `<span class="badge-risk-mlp high">🔴 ${a.riskHigh} alto${a.riskMed>0?' · 🟡 '+a.riskMed+' med':''}</span>`;
+    } else if(a.mlpRiskStatus === 'med'){
+      riskBadge = `<span class="badge-risk-mlp med">🟡 ${a.riskMed} medio</span>`;
+    } else if(a.mlpRiskStatus === 'low'){
+      riskBadge = `<span class="badge-risk-mlp low">🟢 OK</span>`;
+    } else {
+      riskBadge = `<span class="badge-risk-mlp none">—</span>`;
     }
+
+    body+=`<tr class="mlpraw" data-mlp="${a.mlp}"><td>${i+1}</td><td class="mlpname">${a.mlp}</td><td>${a.rutas}</td><td>${fmt(a.paq)}</td><td>${fmt(a.entr)}</td>
+      <td><span class="barwrap"><span class="bar" style="width:${w}%"></span></span><b style="color:#ff6b6b">${a.fall}</b></td>
+      <td>${a.pend}</td><td>${califBadge(a.calif)}</td><td>${riskBadge}</td>
+      <td>${a.rutaImpacto?`<b>${a.rutaImpacto.id}</b> <span style="color:#9aa4b2">(${a.rutaImpacto.fall} fall.)</span>`:'—'}</td>
+      <td>${a.driverImpacto?`<b>${a.driverImpacto.name}</b> <span style="color:#9aa4b2">(${a.driverImpacto.fall} fall.)</span>`:'—'}</td></tr>`;
+    if(expandedMLP===a.mlp) body+=`<tr class="detailrow"><td colspan="11">${detailTable(a)}</td></tr>`;
   });
-  document.getElementById('mlpTbody').innerHTML = body;
-  document.querySelectorAll('#mlpTbody tr.mlpraw').forEach(tr => {
-    tr.addEventListener('click', function() {
-      const m = this.getAttribute('data-mlp');
-      expandedMLP = (expandedMLP === m) ? null : m;
-      renderDash();
-    });
+  document.getElementById('mlpTbody').innerHTML=body;
+  document.querySelectorAll('#mlpTbody tr.mlpraw').forEach(tr=>{
+    tr.addEventListener('click',function(){const m=this.getAttribute('data-mlp');expandedMLP=(expandedMLP===m)?null:m;renderDash();});
   });
-  const allRoutes = rows.flatMap(a => a.routes.map(r => Object.assign({}, r, {mlp:a.mlp}))).sort((a,b)=>b.fall-a.fall).slice(0,6);
-  const allDrivers = rows.flatMap(a => a.drivers.map(d => Object.assign({}, d, {mlp:a.mlp}))).sort((a,b)=>b.fall-a.fall).slice(0,4);
-  document.getElementById('topRoutes').innerHTML = allRoutes.map((r,i) => `
+  const allRoutes=rows.flatMap(a=>a.routes.map(r=>Object.assign({},r,{mlp:a.mlp}))).sort((a,b)=>b.fall-a.fall).slice(0,6);
+  const allDrivers=rows.flatMap(a=>a.drivers.map(d=>Object.assign({},d,{mlp:a.mlp}))).sort((a,b)=>b.fall-a.fall).slice(0,4);
+  document.getElementById('topRoutes').innerHTML=allRoutes.map((r,i)=>`
     <div class="off-item"><div class="rank r${i+1}">${i+1}</div>
     <div class="off-main"><b>${r.id}</b> ${califBadge(routeCalif(r))}<div class="off-sub">${r.driver} · ${r.mlp}</div></div>
-    <div class="off-right"><b>${r.fall}</b> fallidos de ${r.paq}</div></div>`).join('') || '<div class="off-sub">Sin datos</div>';
-  document.getElementById('topDrivers').innerHTML = allDrivers.map((d,i) => `
+    <div class="off-right"><b>${r.fall}</b> fallidos de ${r.paq}</div></div>`).join('')||'<div class="off-sub">Sin datos</div>';
+  document.getElementById('topDrivers').innerHTML=allDrivers.map((d,i)=>`
     <div class="off-item"><div class="rank r${i+1}">${i+1}</div>
     <div class="off-main"><b>${d.name}</b> ${califBadge(d.paq>0?((d.paq-d.fall)/d.paq*100):0)}<div class="off-sub">${Object.keys(d.rutas).length} ruta(s) · ${d.mlp}</div></div>
-    <div class="off-right"><b>${d.fall}</b> fallidos de ${d.paq}</div></div>`).join('') || '<div class="off-sub">Sin datos</div>';
+    <div class="off-right"><b>${d.fall}</b> fallidos de ${d.paq}</div></div>`).join('')||'<div class="off-sub">Sin datos</div>';
 }
-function routeCalif(r){ return (r.paq - r.fall) > 0 ? (r.entr/(r.paq-r.fall)*100) : 0; }
-function detailTable(a) {
-  let h = `<div style="font-size:14px;margin-bottom:8px;color:#9aa4b2;">Resumen por MLP: <b style="color:#58a6ff">${a.mlp}</b> — ${a.rutas} rutas</div>`;
-  h += '<table><tr><th>ID_RUTA</th><th>DRIVER</th><th>PLACAS</th><th>TIPO</th><th>PAQ</th><th>ENTR.</th><th>FALL.</th><th>PEND.</th><th>%AVANCE</th><th>ESTADO</th></tr>';
-  a.routes.forEach(r => {
-    h += `<tr><td>${r.id}</td><td>${r.driver}</td><td>${r.placas}</td><td>${r.tipo}</td><td>${r.paq}</td><td>${r.entr}</td><td style="color:#ff6b6b;font-weight:700">${r.fall}</td><td>${r.pend}</td><td>${r.pct}</td><td>${r.estado}</td></tr>`;
+
+function detailTable(a){
+  // Ordenar rutas: primero las que están en riesgo (high > med > low), luego por fallidos
+  const sortedRoutes = [...a.routes].sort((x,y) => {
+    const rx = allRoutesRisk[x.id] || {status:'low'};
+    const ry = allRoutesRisk[y.id] || {status:'low'};
+    const order = {high:0, med:1, low:2};
+    const ox = order[rx.status] ?? 2;
+    const oy = order[ry.status] ?? 2;
+    if(ox !== oy) return ox - oy;
+    return y.fall - x.fall;
   });
-  h += '</table>';
-  return h;
+
+  let h=`<div style="font-size:13px;margin-bottom:8px;color:#9aa4b2;">Resumen: <b style="color:#58a6ff">${a.mlp}</b> — ${a.rutas} rutas · ⚠️ ${a.riskHigh} alto · 🟡 ${a.riskMed} medio · 🟢 ${a.riskLow} bajo</div>`;
+  h+='<table><tr><th>ID_RUTA</th><th>DRIVER</th><th>PLACAS</th><th>TIPO</th><th>PAQ</th><th>ENTR.</th><th>FALL.</th><th>PEND.</th><th>%AVANCE</th><th>⚠️ RIESGO</th><th>ESTADO</th></tr>';
+  sortedRoutes.forEach(r=>{
+    const risk = allRoutesRisk[r.id];
+    let riskBadge = '<span class="badge-risk-mlp none">—</span>';
+    if(risk){
+      if(risk.status === 'high') riskBadge = `<span class="badge-risk-mlp high">🔴 ${r.pend > 0 ? risk.atRisk : 0}</span>`;
+      else if(risk.status === 'med') riskBadge = `<span class="badge-risk-mlp med">🟡 ${risk.atRisk}</span>`;
+      else riskBadge = `<span class="badge-risk-mlp low">🟢</span>`;
+    }
+    h+=`<tr><td>${r.id}</td><td>${r.driver}</td><td>${r.placas}</td><td>${r.tipo}</td><td>${r.paq}</td><td>${r.entr}</td><td style="color:#ff6b6b;font-weight:700">${r.fall}</td><td>${r.pend}</td><td>${r.pct}</td><td>${riskBadge}</td><td>${r.estado}</td></tr>`;
+  });
+  return h+'</table>';
 }
-function formatDashResumen(rows) {
-  let result = `MLP\tRUTAS\tPAQ\tENTR\tFALLIDOS\tPEND\t%CALIF\t%SIN_FALL\tRUTA_MAYOR_IMPACTO\tDRIVER_MAYOR_IMPACTO`;
+
+/* ============ Vista 2: Top Rutas ============ */
+function renderTopRutasView(rows){
+  const allRoutes = rows.flatMap(a => a.routes.map(r => Object.assign({}, r, {mlp:a.mlp})));
+  allRoutes.sort((a,b) => b.pend - a.pend);
+
+  document.getElementById('topRutasThead').innerHTML = `<tr>
+    <th>#</th><th>ID Ruta</th><th>Conductor</th><th>MLP</th><th>Placas</th>
+    <th>Pendientes</th><th>Entregados</th><th>Fallidos</th><th>Total</th>
+    <th>% Avance</th><th>⚠️ En Riesgo</th><th>Nivel</th><th>Estado</th>
+  </tr>`;
+
+  if(!allRoutes.length){
+    document.getElementById('topRutasTbody').innerHTML = '<tr><td colspan="13" class="no-data">Sin datos.</td></tr>';
+    return;
+  }
+
+  let html = '';
+  allRoutes.slice(0, 50).forEach((r,i) => {
+    const risk = allRoutesRisk[r.id] || {atRisk:0, riskPct:0, status:'low'};
+    const status = risk.status;
+    const rowClass = status === 'high' ? 'risk-high' : (status === 'med' ? 'risk-med' : 'risk-low');
+    const riskLabel = status === 'high' ? '🔴 ALTO' : (status === 'med' ? '🟡 MEDIO' : '🟢 BAJO');
+    const badgeClass = status;
+
+    html += `<tr class="${rowClass}">
+      <td>${i+1}</td>
+      <td style="font-weight:700;color:#58a6ff;">${r.id}</td>
+      <td>${r.driver}</td>
+      <td>${r.mlp}</td>
+      <td>${r.placas}</td>
+      <td style="font-weight:700;">${r.pend}</td>
+      <td style="color:#3fd68f;">${r.entr}</td>
+      <td style="color:#ff6b6b;">${r.fall}</td>
+      <td>${r.paq}</td>
+      <td>${r.pct}</td>
+      <td style="font-weight:800;color:${risk.atRisk>0?'#ff6b6b':'#3fd68f'};">${risk.atRisk}</td>
+      <td><span class="badge-risk ${badgeClass}">${riskLabel}</span></td>
+      <td style="font-size:12px;color:#8b949e;">${r.estado}</td>
+    </tr>`;
+  });
+  document.getElementById('topRutasTbody').innerHTML = html;
+}
+
+/* ============ Vista 3: Productividad Drivers ============ */
+function renderDriversView(rows){
+  const driverMap = {};
   rows.forEach(a => {
-    result += `\n${a.mlp}\t${a.rutas}\t${a.paq}\t${a.entr}\t${a.fall}\t${a.pend}\t${a.calif.toFixed(1)}%\t${a.sinF.toFixed(1)}%\t${a.rutaImpacto?a.rutaImpacto.id:''}\t${a.driverImpacto?a.driverImpacto.name:''}`;
-  });
-  return result;
-}
-function exportDashCSV(rows) {
-  const headers = ['MLP','RUTAS','PAQ','ENTR','FALLIDOS','PEND','%CALIF','%SIN_FALLIDOS','RUTA_MAYOR_IMPACTO','DRIVER_MAYOR_IMPACTO'];
-  let csv = headers.join(',') + '\n';
-  rows.forEach(a => {
-    const vals = [a.mlp,a.rutas,a.paq,a.entr,a.fall,a.pend,a.calif.toFixed(1),a.sinF.toFixed(1),a.rutaImpacto?a.rutaImpacto.id:'',a.driverImpacto?a.driverImpacto.name:''];
-    csv += vals.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',') + '\n';
-  });
-  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-  const link = document.createElement("a");
-  link.setAttribute("href", URL.createObjectURL(blob));
-  link.setAttribute("download", `Resumen_MLP_${new Date().toISOString().slice(0,10)}.csv`);
-  document.body.appendChild(link); link.click();
-  setTimeout(() => { document.body.removeChild(link); }, 150);
-}
-
-/* ---------- COPIADOS ---------- */
-function fallbackCopyTextToClipboard(text, statusElement) {
-  var textArea = document.createElement("textarea");
-  textArea.value = text;
-  textArea.style.position = "fixed"; textArea.style.top = "-1000px"; textArea.style.left = "-1000px";
-  document.body.appendChild(textArea); textArea.focus(); textArea.select();
-  try {
-    var successful = document.execCommand('copy');
-    if (successful) { statusElement.style.display = 'inline'; setTimeout(() => { statusElement.style.display = 'none'; }, 3000); }
-    else { alert('No se pudo copiar al portapapeles usando el método alternativo.'); }
-  } catch (err) { alert('No se pudo copiar al portapapeles.'); }
-  document.body.removeChild(textArea);
-}
-function copyToClipboard(text, statusElement) {
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(text).then(() => {
-      statusElement.style.display = 'inline';
-      setTimeout(() => { statusElement.style.display = 'none'; }, 3000);
-    }).catch(err => { console.warn('Falló el método moderno, usando el alternativo:', err); fallbackCopyTextToClipboard(text, statusElement); });
-  } else { fallbackCopyTextToClipboard(text, statusElement); }
-}
-function formatAssign(data) {
-  let result = `ID_RUTA\tPLACAS\tMLP\tDRIVER`;
-  data.forEach(row => { result += `\n${String(row['ID_Ruta'])}\t${String(row['Placas'])}\t${String(row['MLP'])}\t${String(row['Conductor'])}`; });
-  return result;
-}
-function formatSPORH(data) {
-  let result = `ID_RUTA\tPLACAS\tDRIVER\tAVANCE\tSPR DETALLES\tSPR\tCOMERCIALES\tRESIDENCIALES\tOZH\tORH\tSTEAM OUT`;
-  data.forEach(row => {
-    result += `\n${String(row['ID_Ruta'])}\t${String(row['Placas'])}\t${String(row['Conductor'])}\t${String(row['%_Avance'])}\t${String(row['SPR_Detalle'])}\t${String(row['SPR_Total'])}\t\t\t${String(row['OZH_Zona_Entrega'])}\t${String(row['ORH_Ruta'])}\t${String(row['Steam_Out'])}`;
-  });
-  return result;
-}
-function formatCloseReport(data) {
-  let result = `ID_RUTA\tMLP\tTIPO DE UNIDAD\tDRIVER\tFALLIDOS\tENTREGADOS`;
-  data.forEach(row => {
-    result += `\n${String(row['ID_Ruta'])}\t${String(row['MLP'])}\t${String(row['TIPO_DE_UNIDAD'])}\t${String(row['Conductor'])}\t${String(row['Fallidos'])}\t${String(row['Entregados'])}`;
-  });
-  return result;
-}
-
-/* ---------- MODAL SPORH ---------- */
-const modal = document.getElementById('filterModal');
-const filterMLP = document.getElementById('filterMLP');
-const filterTop10 = document.getElementById('filterTop10');
-document.getElementById('copySPORHBtn').addEventListener('click', function() {
-  if (globalData.length === 0) { alert('Primero debes procesar los datos con el botón verde.'); return; }
-  const mlpList = [...new Set(globalData.map(row => row['MLP'].trim()))].filter(mlp => mlp !== '').sort();
-  filterMLP.innerHTML = '';
-  const optionAll = document.createElement('option'); optionAll.value = 'Todos'; optionAll.textContent = 'Todos'; filterMLP.appendChild(optionAll);
-  mlpList.forEach(mlp => { const o = document.createElement('option'); o.value = mlp; o.textContent = mlp; filterMLP.appendChild(o); });
-  modal.style.display = 'flex';
-});
-document.getElementById('modalCancelBtn').addEventListener('click', function() { modal.style.display = 'none'; });
-window.addEventListener('click', function(event) { if (event.target == modal) modal.style.display = 'none'; });
-document.getElementById('modalConfirmBtn').addEventListener('click', function() {
-  const selectedMLP = filterMLP.value;
-  const selectedTop10 = filterTop10.value;
-  const copyStatus = document.getElementById('copyStatus');
-  let filteredData = [...globalData];
-  if (selectedMLP !== 'Todos') filteredData = filteredData.filter(row => row['MLP'] === selectedMLP);
-  if (selectedTop10 === 'Top10') { filteredData.sort((a,b) => b['Pendientes'] - a['Pendientes']); filteredData = filteredData.slice(0,10); }
-  if (filteredData.length === 0) { alert('No se encontraron registros con los filtros seleccionados.'); return; }
-  copyToClipboard(formatSPORH(filteredData), copyStatus);
-  modal.style.display = 'none';
-});
-document.getElementById('copyAssignBtn').addEventListener('click', function() {
-  if (globalData.length === 0) { alert('Primero debes procesar los datos con el botón verde.'); return; }
-  copyToClipboard(formatAssign(globalData), document.getElementById('copyStatus'));
-});
-document.getElementById('copyReportBtn').addEventListener('click', function() {
-  if (globalData.length === 0) { alert('Primero debes procesar los datos con el botón verde.'); return; }
-  copyToClipboard(formatCloseReport(globalData), document.getElementById('copyStatus'));
-});
-
-function downloadCSV(data) {
-  const headers = ['ID_Ruta','Conductor','MLP','Placas','TIPO_DE_UNIDAD','Categorias','%_Avance','SPR_Detalle','Pendientes','Fallidos','Entregados','SPR_Total','OZH_Zona_Entrega','ORH_Ruta','Steam_Out','Estado'];
-  let csvContent = headers.join(',') + '\n';
-  data.forEach(row => {
-    let rowArray = headers.map(header => {
-      let value = String(row[header] || '');
-      value = value.replace(/"/g, '""');
-      return `"${value}"`;
+    a.routes.forEach(r => {
+      const key = r.driver + '|' + a.mlp;
+      if(!driverMap[key]) driverMap[key] = {name:r.driver, mlp:a.mlp, rutas:0, paq:0, entr:0, fall:0, pend:0, orhTotal:0, rutasConOrh:0};
+      const d = driverMap[key];
+      d.rutas++;
+      d.paq += r.paq;
+      d.entr += r.entr;
+      d.fall += r.fall;
+      d.pend += r.pend;
+      const risk = allRoutesRisk[r.id];
+      if(risk && risk.orhHours > 0){
+        d.orhTotal += risk.orhHours;
+        d.rutasConOrh++;
+      }
     });
-    csvContent += rowArray.join(',') + '\n';
   });
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-  const link = document.createElement("a");
-  const url = URL.createObjectURL(blob);
-  link.setAttribute("href", url);
-  link.setAttribute("download", `Rutas_Logistica_${new Date().toISOString().slice(0,10)}.csv`);
-  document.body.appendChild(link); link.click();
-  setTimeout(() => { document.body.removeChild(link); URL.revokeObjectURL(url); }, 150);
+
+  const drivers = Object.values(driverMap).map(d => {
+    const pqPerHour = d.orhTotal > 0 ? d.entr / d.orhTotal : 0;
+    const calif = (d.paq - d.fall) > 0 ? (d.entr / (d.paq - d.fall) * 100) : 0;
+    return {...d, pqPerHour, calif};
+  });
+  drivers.sort((a,b) => b.entr - a.entr);
+
+  document.getElementById('driversThead').innerHTML = `<tr>
+    <th>#</th><th>Conductor</th><th>MLP</th><th>Rutas</th>
+    <th>Paquetes</th><th>Entregados</th><th>Fallidos</th><th>Pendientes</th>
+    <th>Pq/Hora</th><th>% Calificación</th>
+  </tr>`;
+
+  if(!drivers.length){
+    document.getElementById('driversTbody').innerHTML = '<tr><td colspan="10" class="no-data">Sin datos.</td></tr>';
+    return;
+  }
+
+  let html = '';
+  drivers.slice(0, 50).forEach((d,i) => {
+    const rankClass = i < 3 ? `r${i+1}` : 'r4';
+    html += `<tr>
+      <td><div class="rank ${rankClass}" style="display:inline-flex;">${i+1}</div></td>
+      <td style="font-weight:700;color:#58a6ff;">${d.name}</td>
+      <td>${d.mlp}</td>
+      <td>${d.rutas}</td>
+      <td>${d.paq}</td>
+      <td style="color:#3fd68f;font-weight:700;">${d.entr}</td>
+      <td style="color:#ff6b6b;">${d.fall}</td>
+      <td>${d.pend}</td>
+      <td style="color:#39d2c0;font-weight:700;">${d.pqPerHour > 0 ? d.pqPerHour.toFixed(2) : '—'}</td>
+      <td>${califBadge(d.calif)}</td>
+    </tr>`;
+  });
+  document.getElementById('driversTbody').innerHTML = html;
 }
+
+/* ============ Vista 4: Análisis de Avance ============ */
+function renderAvanceView(rows){
+  const allRoutes = rows.flatMap(a => a.routes.map(r => Object.assign({}, r, {mlp:a.mlp})));
+  // Ordenar por % avance ascendente (los más rezagados primero)
+  allRoutes.sort((a,b) => {
+    const pa = parseFloat(String(a.pct).replace(/[^0-9.]/g,'')) || 0;
+    const pb = parseFloat(String(b.pct).replace(/[^0-9.]/g,'')) || 0;
+    return pa - pb;
+  });
+
+  document.getElementById('avanceThead').innerHTML = `<tr>
+    <th>#</th><th>ID Ruta</th><th>Conductor</th><th>MLP</th>
+    <th>% Avance</th><th>Pendientes</th><th>Entregados</th><th>Fallidos</th><th>Total</th>
+    <th>⚠️ En Riesgo</th><th>Nivel</th><th>Estado</th>
+  </tr>`;
+
+  if(!allRoutes.length){
+    document.getElementById('avanceTbody').innerHTML = '<tr><td colspan="12" class="no-data">Sin datos.</td></tr>';
+    return;
+  }
+
+  let html = '';
+  allRoutes.slice(0, 50).forEach((r,i) => {
+    const risk = allRoutesRisk[r.id] || {atRisk:0, riskPct:0, status:'low'};
+    const status = risk.status;
+    const rowClass = status === 'high' ? 'risk-high' : (status === 'med' ? 'risk-med' : 'risk-low');
+    const riskLabel = status === 'high' ? '🔴 ALTO' : (status === 'med' ? '🟡 MEDIO' : '🟢 BAJO');
+    const badgeClass = status;
+    const pctNum = parseFloat(String(r.pct).replace(/[^0-9.]/g,'')) || 0;
+    const pctColor = pctNum >= 80 ? '#3fd68f' : (pctNum >= 50 ? '#ffc861' : '#ff6b6b');
+
+    html += `<tr class="${rowClass}">
+      <td>${i+1}</td>
+      <td style="font-weight:700;color:#58a6ff;">${r.id}</td>
+      <td>${r.driver}</td>
+      <td>${r.mlp}</td>
+      <td style="font-weight:800;color:${pctColor};">${r.pct}</td>
+      <td style="font-weight:700;">${r.pend}</td>
+      <td style="color:#3fd68f;">${r.entr}</td>
+      <td style="color:#ff6b6b;">${r.fall}</td>
+      <td>${r.paq}</td>
+      <td style="font-weight:800;color:${risk.atRisk>0?'#ff6b6b':'#3fd68f'};">${risk.atRisk}</td>
+      <td><span class="badge-risk ${badgeClass}">${riskLabel}</span></td>
+      <td style="font-size:12px;color:#8b949e;">${r.estado}</td>
+    </tr>`;
+  });
+  document.getElementById('avanceTbody').innerHTML = html;
+}
+
+/* ============ Vista 5: Ejecutivo ============ */
+function renderEjecutivoView(rows, stats){
+  const {totPaq,totEntr,totFall,totPend,totRutas,calif,sinF,totalRiskRoutes} = stats;
+
+  // Contar MLPs con riesgo
+  const mlpWithRisk = rows.filter(a => a.mlpRiskStatus === 'high' || a.mlpRiskStatus === 'med').length;
+  const mlpClean = rows.length - mlpWithRisk;
+
+  // Promedio de paquetes por ruta
+  const avgPaqPerRoute = totRutas > 0 ? (totPaq / totRutas) : 0;
+  // Promedio de fallidos por ruta
+  const avgFallPerRoute = totRutas > 0 ? (totFall / totRutas) : 0;
+
+  document.getElementById('execGrid').innerHTML = `
+    <div class="exec-card c-blue">
+      <div class="exec-icon">🚚</div>
+      <div class="exec-val">${totRutas}</div>
+      <div class="exec-lbl">Rutas Activas</div>
+      <div class="exec-sub">En seguimiento</div>
+    </div>
+    <div class="exec-card c-cyan">
+      <div class="exec-icon">📦</div>
+      <div class="exec-val">${fmt(totPaq)}</div>
+      <div class="exec-lbl">Paquetes Totales</div>
+      <div class="exec-sub">Promedio ${avgPaqPerRoute.toFixed(1)} por ruta</div>
+    </div>
+    <div class="exec-card c-green">
+      <div class="exec-icon">✅</div>
+      <div class="exec-val">${fmt(totEntr)}</div>
+      <div class="exec-lbl">Entregados</div>
+      <div class="exec-sub">${totPaq>0?(totEntr/totPaq*100).toFixed(1):0}% del total</div>
+    </div>
+    <div class="exec-card c-red">
+      <div class="exec-icon">❌</div>
+      <div class="exec-val">${fmt(totFall)}</div>
+      <div class="exec-lbl">Fallidos</div>
+      <div class="exec-sub">Promedio ${avgFallPerRoute.toFixed(1)} por ruta</div>
+    </div>
+    <div class="exec-card c-yellow">
+      <div class="exec-icon">⏳</div>
+      <div class="exec-val">${fmt(totPend)}</div>
+      <div class="exec-lbl">Pendientes</div>
+      <div class="exec-sub">${totPaq>0?(totPend/totPaq*100).toFixed(1):0}% del total</div>
+    </div>
+    <div class="exec-card ${calif>=90?'c-green':(calif>=80?'c-yellow':'c-red')}">
+      <div class="exec-icon">🎯</div>
+      <div class="exec-val">${calif.toFixed(1)}%</div>
+      <div class="exec-lbl">% Calificación</div>
+      <div class="exec-sub">Entregados ÷ (Total − Fallidos)</div>
+    </div>
+    <div class="exec-card c-purple">
+      <div class="exec-icon">⚠️</div>
+      <div class="exec-val">${totalRiskRoutes}</div>
+      <div class="exec-lbl">Rutas en Riesgo</div>
+      <div class="exec-sub">De ${totRutas} rutas activas</div>
+    </div>
+    <div class="exec-card c-green">
+      <div class="exec-icon">🏢</div>
+      <div class="exec-val">${mlpClean}</div>
+      <div class="exec-lbl">MLPs Limpios</div>
+      <div class="exec-sub">Sin rutas en riesgo</div>
+    </div>
+    <div class="exec-card ${sinF>=95?'c-green':(sinF>=85?'c-yellow':'c-red')}">
+      <div class="exec-icon">💯</div>
+      <div class="exec-val">${sinF.toFixed(1)}%</div>
+      <div class="exec-lbl">% Sin Fallidos</div>
+      <div class="exec-sub">(Total − Fallidos) ÷ Total</div>
+    </div>
+  `;
+
+  const rtsLabel = document.getElementById('dashRtsSelect').options[document.getElementById('dashRtsSelect').selectedIndex].text;
+  document.getElementById('execSummary').innerHTML = `
+    <div style="background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:14px;margin-bottom:12px;">
+      <b style="color:#58a6ff;">📊 Resumen Ejecutivo</b> — ${new Date().toLocaleString()}<br>
+      <b style="color:#a371f7;">RTS activo:</b> ${rtsLabel}<br><br>
+      Se están monitoreando <b style="color:#58a6ff;">${totRutas} rutas</b> distribuidas en <b>${rows.length} transportadoras (MLP)</b>,
+      con un total de <b style="color:#39d2c0;">${fmt(totPaq)} paquetes</b>.<br><br>
+      De estos, se han <b style="color:#3fd68f;">entregado ${fmt(totEntr)}</b> (${(totEntr/totPaq*100).toFixed(1)}%),
+      <b style="color:#ff6b6b;">fallaron ${fmt(totFall)}</b> (${(totFall/totPaq*100).toFixed(1)}%),
+      y quedan <b style="color:#ffc861;">${fmt(totPend)} pendientes</b> (${(totPend/totPaq*100).toFixed(1)}%).<br><br>
+      La <b>calificación global</b> es de <b style="color:${calif>=90?'#3fd68f':(calif>=80?'#ffc861':'#ff6b6b')};">${calif.toFixed(1)}%</b>
+      y el <b>% sin fallidos</b> es <b style="color:${sinF>=95?'#3fd68f':(sinF>=85?'#ffc861':'#ff6b6b')};">${sinF.toFixed(1)}%</b>.<br><br>
+      ⚠️ <b style="color:#ffc861;">${totalRiskRoutes} rutas</b> están en riesgo de no cumplir el RTS
+      (${totalRiskRoutes>0?'distribuidas en '+mlpWithRisk+' MLPs':'ningún MLP afectado'}).
+      ${mlpClean>0?'<b style="color:#3fd68f;">'+mlpClean+' MLPs</b> se mantienen limpios.':''}
+    </div>
+  `;
+}
+
+function formatDashResumen(rows){
+  let r='MLP\tRUTAS\tPAQ\tENTR\tFALLIDOS\tPEND\t%CALIF\t%SIN_FALL\tRIESGO\tRUTA_MAYOR_IMPACTO\tDRIVER_MAYOR_IMPACTO';
+  rows.forEach(a=>{
+    const riskTxt = a.mlpRiskStatus==='high'?`🔴${a.riskHigh}🟡${a.riskMed}`:(a.mlpRiskStatus==='med'?`🟡${a.riskMed}`:(a.mlpRiskStatus==='low'?'🟢':'—'));
+    r+=`\n${a.mlp}\t${a.rutas}\t${a.paq}\t${a.entr}\t${a.fall}\t${a.pend}\t${a.calif.toFixed(1)}%\t${a.sinF.toFixed(1)}%\t${riskTxt}\t${a.rutaImpacto?a.rutaImpacto.id:''}\t${a.driverImpacto?a.driverImpacto.name:''}`;
+  });
+  return r;
+}
+function exportDashCSV(rows){
+  const h=['MLP','RUTAS','PAQ','ENTR','FALLIDOS','PEND','%CALIF','%SIN_FALLIDOS','RIESGO','RUTA_MAYOR_IMPACTO','DRIVER_MAYOR_IMPACTO'];
+  let csv=h.join(',')+'\n';
+  rows.forEach(a=>{
+    const riskTxt = a.mlpRiskStatus==='high'?`ALTO(${a.riskHigh})`:(a.mlpRiskStatus==='med'?`MEDIO(${a.riskMed})`:(a.mlpRiskStatus==='low'?'BAJO':'NINGUNO'));
+    csv+=[a.mlp,a.rutas,a.paq,a.entr,a.fall,a.pend,a.calif.toFixed(1),a.sinF.toFixed(1),riskTxt,a.rutaImpacto?a.rutaImpacto.id:'',a.driverImpacto?a.driverImpacto.name:''].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')+'\n';
+  });
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const link=document.createElement('a'); link.href=URL.createObjectURL(blob);
+  link.download=`Resumen_MLP_${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(link); link.click(); setTimeout(()=>document.body.removeChild(link),150);
+}
+
+/* ================================================================
+   RUTAS EN RIESGO
+   ================================================================ */
+function populateRiskMLPFilter(){
+  const sel=document.getElementById('riskMLPFilter');
+  const mlps=[...new Set(globalData.map(r=>(r['MLP']||'').trim()))].filter(m=>m).sort();
+  sel.innerHTML='<option value="Todos">Todas</option>';
+  mlps.forEach(m=>{const o=document.createElement('option');o.value=m;o.textContent=m;sel.appendChild(o);});
+}
+
+document.getElementById('rtsSelect').addEventListener('change',()=>{if(globalData.length)buildRisk();});
+document.getElementById('riskMLPFilter').addEventListener('change',()=>{if(globalData.length)buildRisk();});
+document.getElementById('riskExcludeDone').addEventListener('change',()=>{if(globalData.length)buildRisk();});
+document.getElementById('riskRefreshBtn').addEventListener('click',()=>{if(globalData.length)buildRisk();});
+
+function buildRisk(){
+  if(riskTimer) clearInterval(riskTimer);
+  calcRisk();
+  riskTimer = setInterval(calcRisk, 60000);
+}
+
+function calcRisk(){
+  const rtsMinutes = parseInt(document.getElementById('rtsSelect').value,10);
+  const mlpFilter = document.getElementById('riskMLPFilter').value;
+  const excludeDone = document.getElementById('riskExcludeDone').checked;
+  const currentMins = nowMinutes();
+  const hrsRemainingRTS = (rtsMinutes - currentMins) / 60;
+
+  let data = [...globalData];
+  if(mlpFilter !== 'Todos') data = data.filter(r => (r['MLP']||'').trim() === mlpFilter);
+  if(excludeDone) data = data.filter(r => !isExcludedState(r['Estado']));
+
+  riskData = data.map(r => {
+    const pendientes = num(r['Pendientes']);
+    const entregados = num(r['Entregados']);
+    const orhStr = r['ORH_Ruta'] || '';
+    const estado = r['Estado'] || '';
+    const orhMinutes = parseTimeToMinutes(orhStr);
+    const orhHours = orhMinutes > 0 ? (orhMinutes / 60) : 0;
+
+    let pqPerHour = 0, minPerDelivery = 0, estimatedDeliver = 0, atRisk = 0, riskPct = 0, status = 'normal';
+
+    if(orhHours > 0 && entregados > 0){
+      pqPerHour = entregados / orhHours;
+      minPerDelivery = orhMinutes / entregados;
+    }
+
+    if(hrsRemainingRTS > 0){
+      estimatedDeliver = Math.floor(pqPerHour * hrsRemainingRTS);
+      atRisk = Math.max(0, pendientes - estimatedDeliver);
+      riskPct = pendientes > 0 ? (atRisk / pendientes * 100) : 0;
+    } else {
+      atRisk = pendientes;
+      riskPct = pendientes > 0 ? 100 : 0;
+    }
+
+    if(riskPct >= 50) status = 'high';
+    else if(riskPct >= 20) status = 'med';
+    else status = 'low';
+
+    return {
+      id: r['ID_Ruta'], conductor: r['Conductor'], mlp: r['MLP'], placas: r['Placas'],
+      pendientes, entregados, fallidos: num(r['Fallidos']), orh: orhStr, orhHours, estado,
+      pqPerHour, minPerDelivery, hrsRemainingRTS, estimatedDeliver, atRisk, riskPct, status
+    };
+  });
+
+  riskData.sort((a,b) => b.atRisk - a.atRisk || b.riskPct - a.riskPct);
+
+  renderRiskKPIs(hrsRemainingRTS, rtsMinutes);
+  renderRiskTable();
+  renderRiskSummary();
+  updateRiskBadge();
+}
+
+function renderRiskKPIs(hrsRemaining, rtsMins){
+  const totalRutas = riskData.length;
+  const totalPend = riskData.reduce((s,r)=>s+r.pendientes,0);
+  const totalEntr = riskData.reduce((s,r)=>s+r.entregados,0);
+  const totalRisk = riskData.reduce((s,r)=>s+r.atRisk,0);
+  const avgPqH = riskData.filter(r=>r.pqPerHour>0);
+  const avgPqHVal = avgPqH.length ? (avgPqH.reduce((s,r)=>s+r.pqPerHour,0)/avgPqH.length) : 0;
+  const riskPctTotal = totalPend > 0 ? (totalRisk/totalPend*100) : 0;
+  const rtsLabel = document.getElementById('rtsSelect').options[document.getElementById('rtsSelect').selectedIndex].text;
+
+  const hrsClass = hrsRemaining <= 0 ? 'red' : (hrsRemaining <= 1 ? 'yellow' : 'blue');
+  const riskClass = riskPctTotal >= 50 ? 'red' : (riskPctTotal >= 20 ? 'yellow' : 'green');
+
+  document.getElementById('riskKpis').innerHTML = `
+    <div class="rkpi blue"><div class="rkpi-lbl">🕐 Hora Actual</div><div class="rkpi-val">${nowTimeString()}</div><div class="rkpi-sub">Última actualización</div></div>
+    <div class="rkpi purple"><div class="rkpi-lbl">🎯 RTS</div><div class="rkpi-val" style="font-size:20px;">${minutesToHHMM(rtsMins)}</div><div class="rkpi-sub">${rtsLabel}</div></div>
+    <div class="rkpi ${hrsClass}"><div class="rkpi-lbl">⏳ Hrs Restantes RTS</div><div class="rkpi-val">${hrsRemaining <= 0 ? 'VENCIDO' : hrsRemaining.toFixed(1)}</div><div class="rkpi-sub">${hrsRemaining > 0 ? Math.floor(hrsRemaining)+'h '+Math.round((hrsRemaining%1)*60)+'m' : 'Tiempo agotado'}</div></div>
+    <div class="rkpi cyan"><div class="rkpi-lbl">🚚 Rutas Activas</div><div class="rkpi-val">${totalRutas}</div><div class="rkpi-sub">En seguimiento</div></div>
+    <div class="rkpi yellow"><div class="rkpi-lbl">📦 Pendientes</div><div class="rkpi-val">${fmt(totalPend)}</div><div class="rkpi-sub">${fmt(totalEntr)} entregados</div></div>
+    <div class="rkpi ${riskClass}"><div class="rkpi-lbl">⚠️ En Riesgo</div><div class="rkpi-val">${fmt(totalRisk)}</div><div class="rkpi-sub">${riskPctTotal.toFixed(1)}% del pendiente</div></div>
+    <div class="rkpi green"><div class="rkpi-lbl">📊 Prom. Pq/Hora</div><div class="rkpi-val">${avgPqHVal.toFixed(1)}</div><div class="rkpi-sub">Entregados ÷ ORH</div></div>
+    <div class="rkpi blue"><div class="rkpi-lbl">✅ Estimado Entregar</div><div class="rkpi-val">${fmt(riskData.reduce((s,r)=>s+r.estimatedDeliver,0))}</div><div class="rkpi-sub">Antes del RTS</div></div>
+  `;
+}
+
+function renderRiskTable(){
+  document.getElementById('riskThead').innerHTML = `<tr>
+    <th>#</th><th>ID Ruta</th><th>Conductor</th><th>MLP</th>
+    <th>Pendientes</th><th>Entregados</th>
+    <th>ORH (hrs)</th>
+    <th>Pq/Hora</th><th>Min/Entr.</th>
+    <th>Hrs Rest. RTS</th><th>Est. Entregar</th><th>⚠️ En Riesgo</th><th>% Riesgo</th><th>Nivel</th><th>Estado</th>
+  </tr>`;
+
+  if(!riskData.length){
+    document.getElementById('riskTbody').innerHTML = '<tr><td colspan="15" class="no-data">No hay rutas para mostrar con los filtros actuales.</td></tr>';
+    return;
+  }
+
+  let html = '';
+  riskData.forEach((r,i) => {
+    const rowClass = r.status === 'high' ? 'risk-high' : (r.status === 'med' ? 'risk-med' : 'risk-low');
+    const barClass = r.status;
+    const barW = Math.min(100, Math.round(r.riskPct));
+    const badgeClass = r.status;
+    const pqhStr = r.pqPerHour > 0 ? r.pqPerHour.toFixed(2) : '—';
+    const mpdStr = r.minPerDelivery > 0 ? r.minPerDelivery.toFixed(1) + ' min' : '—';
+    const orhStr = r.orhHours > 0 ? r.orhHours.toFixed(2) + ' h' : (r.orh || '—');
+    const hrsStr = r.hrsRemainingRTS > 0 ? r.hrsRemainingRTS.toFixed(1) + 'h' : (r.hrsRemainingRTS <= 0 ? '⛔ Vencido' : '—');
+    const riskLabel = r.status === 'high' ? '🔴 ALTO' : (r.status === 'med' ? '🟡 MEDIO' : '🟢 BAJO');
+
+    html += `<tr class="${rowClass}">
+      <td>${i+1}</td>
+      <td style="font-weight:700;color:#58a6ff;">${r.id}</td>
+      <td>${r.conductor}</td>
+      <td>${r.mlp}</td>
+      <td style="font-weight:700;">${r.pendientes}</td>
+      <td style="color:#3fd68f;">${r.entregados}</td>
+      <td style="font-weight:700;color:#a371f7;">${orhStr}</td>
+      <td style="font-weight:700;color:#39d2c0;">${pqhStr}</td>
+      <td>${mpdStr}</td>
+      <td style="font-weight:700;color:${r.hrsRemainingRTS<=0?'#ff6b6b':'#58a6ff'};">${hrsStr}</td>
+      <td>${r.estimatedDeliver}</td>
+      <td style="font-weight:800;color:${r.atRisk>0?'#ff6b6b':'#3fd68f'};font-size:15px;">${r.atRisk}</td>
+      <td><span class="risk-bar-wrap"><span class="risk-bar ${barClass}" style="width:${barW}%"></span></span>${r.riskPct.toFixed(0)}%</td>
+      <td><span class="badge-risk ${badgeClass}">${riskLabel}</span></td>
+      <td style="font-size:12px;color:#8b949e;">${r.estado}</td>
+    </tr>`;
+  });
+  document.getElementById('riskTbody').innerHTML = html;
+}
+
+function renderRiskSummary(){
+  const map = {};
+  riskData.forEach(r => {
+    const mlp = (r.mlp||'').trim() || '(sin MLP)';
+    if(!map[mlp]) map[mlp] = {mlp, rutas:0, pend:0, entr:0, risk:0, est:0};
+    map[mlp].rutas++;
+    map[mlp].pend += r.pendientes;
+    map[mlp].entr += r.entregados;
+    map[mlp].risk += r.atRisk;
+    map[mlp].est += r.estimatedDeliver;
+  });
+  const arr = Object.values(map).sort((a,b) => b.risk - a.risk);
+
+  document.getElementById('riskSumThead').innerHTML = '<tr><th>MLP / Transportadora</th><th>Rutas</th><th>Pendientes</th><th>Entregados</th><th>Est. Entregar</th><th>⚠️ En Riesgo</th><th>% Riesgo</th><th>Nivel</th></tr>';
+
+  if(!arr.length){
+    document.getElementById('riskSumTbody').innerHTML = '<tr><td colspan="8" class="no-data">Sin datos.</td></tr>';
+    return;
+  }
+
+  const maxRisk = Math.max(...arr.map(a=>a.risk),1);
+  let html = '';
+  arr.forEach(a => {
+    const pct = a.pend > 0 ? (a.risk/a.pend*100) : 0;
+    const status = pct >= 50 ? 'high' : (pct >= 20 ? 'med' : 'low');
+    const barW = Math.round(a.risk/maxRisk*100);
+    const label = status === 'high' ? '🔴 ALTO' : (status === 'med' ? '🟡 MEDIO' : '🟢 BAJO');
+    html += `<tr>
+      <td style="font-weight:700;color:#58a6ff;">${a.mlp}</td>
+      <td>${a.rutas}</td>
+      <td>${a.pend}</td>
+      <td style="color:#3fd68f;">${a.entr}</td>
+      <td>${a.est}</td>
+      <td style="font-weight:800;color:#ff6b6b;font-size:15px;">${a.risk}</td>
+      <td><span class="risk-bar-wrap"><span class="risk-bar ${status}" style="width:${barW}%"></span></span>${pct.toFixed(0)}%</td>
+      <td><span class="badge-risk ${status}">${label}</span></td>
+    </tr>`;
+  });
+  document.getElementById('riskSumTbody').innerHTML = html;
+}
+
+function updateRiskBadge(){
+  const totalRisk = riskData.reduce((s,r)=>s+r.atRisk,0);
+  const badge = document.getElementById('riskBadge');
+  if(totalRisk > 0){
+    badge.style.display = 'inline-block';
+    badge.textContent = fmt(totalRisk);
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+document.getElementById('riskCopyBtn').addEventListener('click', function(){
+  if(!riskData.length){alert('No hay datos de riesgo.');return;}
+  let txt = 'ID_RUTA\tCONDUCTOR\tMLP\tPENDIENTES\tENTREGADOS\tORH\tPQ/HORA\tMIN/ENTREGA\tHRS_REST_RTS\tEST_ENTREGAR\tEN_RIESGO\t%RIESGO\tNIVEL\tESTADO';
+  riskData.forEach(r=>{
+    txt+=`\n${r.id}\t${r.conductor}\t${r.mlp}\t${r.pendientes}\t${r.entregados}\t${r.orh}\t${r.pqPerHour>0?r.pqPerHour.toFixed(2):'—'}\t${r.minPerDelivery>0?r.minPerDelivery.toFixed(1):'—'}\t${r.hrsRemainingRTS>0?r.hrsRemainingRTS.toFixed(1):'VENCIDO'}\t${r.estimatedDeliver}\t${r.atRisk}\t${r.riskPct.toFixed(1)}%\t${r.status.toUpperCase()}\t${r.estado}`;
+  });
+  copyToClipboard(txt, copyStatusEl);
+});
+
+document.getElementById('riskExportBtn').addEventListener('click', function(){
+  if(!riskData.length){alert('No hay datos de riesgo.');return;}
+  const h=['ID_RUTA','CONDUCTOR','MLP','PENDIENTES','ENTREGADOS','ORH','PQ_HORA','MIN_ENTREGA','HRS_REST_RTS','EST_ENTREGAR','EN_RIESGO','PCT_RIESGO','NIVEL','ESTADO'];
+  let csv=h.join(',')+'\n';
+  riskData.forEach(r=>{
+    csv+=[r.id,r.conductor,r.mlp,r.pendientes,r.entregados,r.orh,r.pqPerHour>0?r.pqPerHour.toFixed(2):'',r.minPerDelivery>0?r.minPerDelivery.toFixed(1):'',r.hrsRemainingRTS>0?r.hrsRemainingRTS.toFixed(1):'VENCIDO',r.estimatedDeliver,r.atRisk,r.riskPct.toFixed(1),r.status.toUpperCase(),r.estado].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')+'\n';
+  });
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const link=document.createElement('a'); link.href=URL.createObjectURL(blob);
+  link.download=`Rutas_Riesgo_${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(link); link.click(); setTimeout(()=>document.body.removeChild(link),150);
+});
 </script>
 </body>
 </html>
