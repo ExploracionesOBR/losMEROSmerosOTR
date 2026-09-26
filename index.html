@@ -3,37 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OTR LOS MEROS MEROSSS!!</title>
+<title>Extractor de Datos Logística + Dashboard + Rutas en Riesgo</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh;}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh;overflow-x:hidden;}
 ::-webkit-scrollbar{width:8px;height:8px;}
 ::-webkit-scrollbar-track{background:#161b22;}
 ::-webkit-scrollbar-thumb{background:#30363d;border-radius:4px;}
 ::-webkit-scrollbar-thumb:hover{background:#484f58;}
 
-.app{max-width:1500px;margin:0 auto;padding:16px;}
-.app-header{text-align:center;padding:18px 0 10px;border-bottom:1px solid #21262d;margin-bottom:0;}
-.app-header h1{font-size:24px;font-weight:800;background:linear-gradient(135deg,#58a6ff,#3fd68f);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.5px;}
-.app-header p{font-size:13px;color:#8b949e;margin-top:4px;}
+.app{width:100%;margin:0 auto;padding:12px 16px;}
+.app-header{text-align:center;padding:14px 0 8px;border-bottom:1px solid #21262d;margin-bottom:0;}
+.app-header h1{font-size:22px;font-weight:800;background:linear-gradient(135deg,#58a6ff,#3fd68f);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.5px;}
+.app-header p{font-size:12px;color:#8b949e;margin-top:4px;}
 
 .tabs-nav{display:flex;gap:0;border-bottom:2px solid #21262d;margin-bottom:0;background:#161b22;border-radius:10px 10px 0 0;overflow:hidden;}
-.tab-btn{flex:1;padding:14px 20px;background:transparent;border:none;color:#8b949e;font-size:15px;font-weight:700;cursor:pointer;transition:all .25s;letter-spacing:.5px;border-bottom:3px solid transparent;position:relative;}
+.tab-btn{flex:1;padding:12px 18px;background:transparent;border:none;color:#8b949e;font-size:14px;font-weight:700;cursor:pointer;transition:all .25s;letter-spacing:.5px;border-bottom:3px solid transparent;position:relative;}
 .tab-btn:hover{color:#c9d1d9;background:#1c2333;}
 .tab-btn.active{color:#58a6ff;border-bottom-color:#58a6ff;background:#0d1117;}
 .tab-btn .tab-badge{display:inline-block;background:#ff6b6b;color:#fff;font-size:11px;padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:800;}
-.tab-content{display:none;background:#0d1117;border:1px solid #21262d;border-top:none;border-radius:0 0 10px 10px;padding:20px;animation:fadeIn .3s;}
+.tab-content{display:none;background:#0d1117;border:1px solid #21262d;border-top:none;border-radius:0 0 10px 10px;padding:16px;animation:fadeIn .3s;}
 .tab-content.active{display:block;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
 
-.extractor-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px;margin-bottom:16px;}
-.extractor-card h3{font-size:16px;color:#e6edf3;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
-textarea#sourceInput{width:100%;height:180px;padding:12px;border:1px solid #30363d;border-radius:6px;font-family:'Cascadia Code','Fira Code',monospace;font-size:13px;resize:vertical;background:#0d1117;color:#c9d1d9;transition:border-color .2s;}
+.extractor-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;margin-bottom:14px;}
+.extractor-card h3{font-size:15px;color:#e6edf3;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+textarea#sourceInput{width:100%;height:160px;padding:10px;border:1px solid #30363d;border-radius:6px;font-family:'Cascadia Code','Fira Code',monospace;font-size:12px;resize:vertical;background:#0d1117;color:#c9d1d9;transition:border-color .2s;}
 textarea#sourceInput:focus{outline:none;border-color:#58a6ff;}
-.file-upload{margin-top:10px;font-size:13px;color:#8b949e;display:flex;align-items:center;gap:8px;}
-.file-upload input[type=file]{font-size:13px;color:#c9d1d9;}
-.btn-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;justify-content:center;}
-button{padding:10px 20px;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
+.file-upload{margin-top:8px;font-size:12px;color:#8b949e;display:flex;align-items:center;gap:8px;}
+.file-upload input[type=file]{font-size:12px;color:#c9d1d9;}
+.btn-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;justify-content:center;}
+button{padding:9px 18px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;transition:all .2s;display:inline-flex;align-items:center;gap:5px;}
 button:active{transform:scale(.97);}
 .btn-green{background:#238636;color:#fff;}.btn-green:hover{background:#2ea043;}
 .btn-blue{background:#1f6feb;color:#fff;}.btn-blue:hover{background:#388bfd;}
@@ -42,39 +42,39 @@ button:active{transform:scale(.97);}
 .btn-cyan{background:#0288d1;color:#fff;}.btn-cyan:hover{background:#039be5;}
 .btn-red{background:#da3633;color:#fff;}.btn-red:hover{background:#f85149;}
 .btn-gray{background:#30363d;color:#c9d1d9;}.btn-gray:hover{background:#484f58;}
-#progress{margin-top:12px;font-size:14px;color:#8b949e;text-align:center;min-height:20px;}
-.copied-msg{color:#3fd68f;font-weight:700;font-size:13px;display:none;animation:fadeIn .3s;}
+#progress{margin-top:10px;font-size:13px;color:#8b949e;text-align:center;min-height:20px;}
+.copied-msg{color:#3fd68f;font-weight:700;font-size:12px;display:none;animation:fadeIn .3s;}
 
-#preview-container{margin-top:16px;display:none;}
-#preview-container h3{font-size:15px;color:#e6edf3;margin-bottom:10px;}
-.table-wrap{overflow:auto;max-height:420px;border:1px solid #30363d;border-radius:6px;}
-table.data-table{width:100%;border-collapse:collapse;font-size:13px;}
-table.data-table th,table.data-table td{padding:8px 12px;text-align:left;border-bottom:1px solid #21262d;white-space:nowrap;}
-table.data-table th{background:#1c2333;color:#8b949e;font-weight:700;font-size:12px;letter-spacing:.5px;text-transform:uppercase;position:sticky;top:0;z-index:5;}
+#preview-container{margin-top:14px;display:none;}
+#preview-container h3{font-size:14px;color:#e6edf3;margin-bottom:8px;}
+.table-wrap{overflow:auto;max-height:400px;border:1px solid #30363d;border-radius:6px;}
+table.data-table{width:100%;border-collapse:collapse;font-size:12px;}
+table.data-table th,table.data-table td{padding:7px 10px;text-align:left;border-bottom:1px solid #21262d;white-space:nowrap;}
+table.data-table th{background:#1c2333;color:#8b949e;font-weight:700;font-size:11px;letter-spacing:.5px;text-transform:uppercase;position:sticky;top:0;z-index:5;}
 table.data-table tr:hover td{background:#1c2333;}
-#count-msg{margin-top:8px;font-size:13px;color:#8b949e;}
+#count-msg{margin-top:6px;font-size:12px;color:#8b949e;}
 
 #filterModal{display:none;position:fixed;z-index:9999;inset:0;background:rgba(0,0,0,.6);align-items:center;justify-content:center;backdrop-filter:blur(4px);}
-.modal-content{background:#161b22;border:1px solid #30363d;padding:28px;border-radius:10px;width:420px;max-width:92%;box-shadow:0 8px 30px rgba(0,0,0,.5);}
+.modal-content{background:#161b22;border:1px solid #30363d;padding:24px;border-radius:10px;width:400px;max-width:92%;box-shadow:0 8px 30px rgba(0,0,0,.5);}
 .modal-content h3{color:#e6edf3;margin-bottom:6px;}
-.modal-content p{font-size:13px;color:#8b949e;margin-bottom:14px;}
-.modal-content label{display:block;margin:12px 0 5px;font-weight:600;color:#c9d1d9;font-size:13px;}
-.modal-content select{width:100%;padding:9px;border-radius:6px;border:1px solid #30363d;font-size:14px;background:#0d1117;color:#c9d1d9;}
-.modal-buttons{text-align:right;margin-top:20px;display:flex;gap:8px;justify-content:flex-end;}
+.modal-content p{font-size:12px;color:#8b949e;margin-bottom:12px;}
+.modal-content label{display:block;margin:10px 0 4px;font-weight:600;color:#c9d1d9;font-size:12px;}
+.modal-content select{width:100%;padding:8px;border-radius:6px;border:1px solid #30363d;font-size:13px;background:#0d1117;color:#c9d1d9;}
+.modal-buttons{text-align:right;margin-top:16px;display:flex;gap:8px;justify-content:flex-end;}
 
-.risk-header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;}
-.risk-header h2{font-size:20px;font-weight:800;color:#ffc861;display:flex;align-items:center;gap:8px;}
-.risk-filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 18px;margin-bottom:16px;}
-.risk-filters label{font-size:13px;font-weight:600;color:#8b949e;}
-.risk-filters select{padding:8px 12px;font-size:14px;border-radius:6px;border:1px solid #30363d;background:#0d1117;color:#e6edf3;min-width:180px;}
-.risk-filters .chk-label{display:flex;align-items:center;gap:6px;font-size:13px;color:#c9d1d9;cursor:pointer;}
-.risk-filters .chk-label input{accent-color:#58a6ff;width:16px;height:16px;}
-.risk-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:18px;}
-.rkpi{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 16px;text-align:center;transition:border-color .2s;}
+.risk-header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;}
+.risk-header h2{font-size:18px;font-weight:800;color:#ffc861;display:flex;align-items:center;gap:8px;}
+.risk-filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px 16px;margin-bottom:14px;}
+.risk-filters label{font-size:12px;font-weight:600;color:#8b949e;}
+.risk-filters select{padding:7px 10px;font-size:13px;border-radius:6px;border:1px solid #30363d;background:#0d1117;color:#e6edf3;min-width:160px;}
+.risk-filters .chk-label{display:flex;align-items:center;gap:6px;font-size:12px;color:#c9d1d9;cursor:pointer;}
+.risk-filters .chk-label input{accent-color:#58a6ff;width:15px;height:15px;}
+.risk-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:16px;}
+.rkpi{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px 14px;text-align:center;transition:border-color .2s;}
 .rkpi:hover{border-color:#484f58;}
-.rkpi .rkpi-lbl{font-size:11px;letter-spacing:1px;color:#8b949e;text-transform:uppercase;margin-bottom:4px;}
-.rkpi .rkpi-val{font-size:28px;font-weight:800;line-height:1.1;}
-.rkpi .rkpi-sub{font-size:11px;color:#8b949e;margin-top:3px;}
+.rkpi .rkpi-lbl{font-size:10px;letter-spacing:1px;color:#8b949e;text-transform:uppercase;margin-bottom:3px;}
+.rkpi .rkpi-val{font-size:26px;font-weight:800;line-height:1.1;}
+.rkpi .rkpi-sub{font-size:10px;color:#8b949e;margin-top:2px;}
 .rkpi.blue .rkpi-val{color:#58a6ff;}
 .rkpi.green .rkpi-val{color:#3fd68f;}
 .rkpi.red .rkpi-val{color:#ff6b6b;}
@@ -82,94 +82,94 @@ table.data-table tr:hover td{background:#1c2333;}
 .rkpi.purple .rkpi-val{color:#a371f7;}
 .rkpi.cyan .rkpi-val{color:#39d2c0;}
 
-.risk-section-title{font-size:15px;font-weight:700;color:#e6edf3;margin:18px 0 10px;display:flex;align-items:center;gap:8px;}
-.risk-table-wrap{overflow:auto;max-height:520px;border:1px solid #30363d;border-radius:8px;margin-bottom:18px;}
-table.risk-table{width:100%;border-collapse:collapse;font-size:13px;}
-table.risk-table th,table.risk-table td{padding:9px 11px;text-align:left;border-bottom:1px solid #21262d;white-space:nowrap;}
-table.risk-table th{background:#1c2333;color:#8b949e;font-weight:700;font-size:11px;letter-spacing:.5px;text-transform:uppercase;position:sticky;top:0;z-index:5;}
+.risk-section-title{font-size:14px;font-weight:700;color:#e6edf3;margin:16px 0 8px;display:flex;align-items:center;gap:8px;}
+.risk-table-wrap{overflow:auto;max-height:500px;border:1px solid #30363d;border-radius:8px;margin-bottom:16px;}
+table.risk-table{width:100%;border-collapse:collapse;font-size:12px;}
+table.risk-table th,table.risk-table td{padding:8px 10px;text-align:left;border-bottom:1px solid #21262d;white-space:nowrap;}
+table.risk-table th{background:#1c2333;color:#8b949e;font-weight:700;font-size:10px;letter-spacing:.5px;text-transform:uppercase;position:sticky;top:0;z-index:5;}
 table.risk-table tr:hover td{background:#1c2333;}
 table.risk-table tr.risk-high td{background:rgba(255,107,107,.07);}
 table.risk-table tr.risk-med td{background:rgba(255,200,97,.05);}
 table.risk-table tr.risk-low td{background:rgba(63,214,143,.04);}
-.risk-bar-wrap{display:inline-block;width:80px;height:8px;background:#21262d;border-radius:4px;vertical-align:middle;margin-right:6px;}
-.risk-bar{display:inline-block;height:8px;border-radius:4px;vertical-align:middle;}
+.risk-bar-wrap{display:inline-block;width:70px;height:7px;background:#21262d;border-radius:4px;vertical-align:middle;margin-right:5px;}
+.risk-bar{display:inline-block;height:7px;border-radius:4px;vertical-align:middle;}
 .risk-bar.high{background:#ff6b6b;}.risk-bar.med{background:#ffc861;}.risk-bar.low{background:#3fd68f;}
-.badge-risk{padding:3px 9px;border-radius:5px;font-weight:800;font-size:12px;display:inline-block;}
+.badge-risk{padding:2px 8px;border-radius:5px;font-weight:800;font-size:11px;display:inline-block;}
 .badge-risk.high{background:#4a1a1a;color:#ff6b6b;}.badge-risk.med{background:#4a3b12;color:#ffc861;}.badge-risk.low{background:#123f2a;color:#3fd68f;}
 .risk-summary-wrap{overflow:auto;border:1px solid #30363d;border-radius:8px;}
-table.risk-summary{width:100%;border-collapse:collapse;font-size:13px;}
-table.risk-summary th,table.risk-summary td{padding:10px 12px;text-align:left;border-bottom:1px solid #21262d;}
-table.risk-summary th{background:#1c2333;color:#8b949e;font-weight:700;font-size:11px;letter-spacing:.5px;text-transform:uppercase;}
-.no-data{text-align:center;padding:40px;color:#484f58;font-size:15px;}
+table.risk-summary{width:100%;border-collapse:collapse;font-size:12px;}
+table.risk-summary th,table.risk-summary td{padding:9px 11px;text-align:left;border-bottom:1px solid #21262d;}
+table.risk-summary th{background:#1c2333;color:#8b949e;font-weight:700;font-size:10px;letter-spacing:.5px;text-transform:uppercase;}
+.no-data{text-align:center;padding:30px;color:#484f58;font-size:14px;}
 
 /* ============ DASHBOARD INLINE ============ */
-.dash-inline-wrap{background:#0d1117;color:#e6e6e6;padding:0;font-size:15px;}
-.dash-header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;}
-.dash-title{font-size:22px;font-weight:800;}
-.dash-sub{font-size:13px;color:#9aa4b2;width:100%;margin-top:4px;}
-.dash-actions button{font-size:14px;padding:8px 16px;margin:2px;}
+.dash-inline-wrap{background:#0d1117;color:#e6e6e6;padding:0;font-size:14px;}
+.dash-header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;}
+.dash-title{font-size:20px;font-weight:800;}
+.dash-sub{font-size:12px;color:#9aa4b2;width:100%;margin-top:3px;}
+.dash-actions button{font-size:13px;padding:7px 14px;margin:2px;}
 
 /* Carousel nav */
-.dash-carousel-nav{display:flex;flex-wrap:wrap;gap:6px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:8px;margin:10px 0 14px;align-items:center;}
-.dash-nav-btn{padding:8px 14px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#8b949e;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:5px;}
+.dash-carousel-nav{display:flex;flex-wrap:wrap;gap:5px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:7px;margin:8px 0 12px;align-items:center;}
+.dash-nav-btn{padding:7px 12px;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#8b949e;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:4px;}
 .dash-nav-btn:hover{background:#1c2333;color:#e6edf3;border-color:#484f58;}
 .dash-nav-btn.active{background:#1f6feb;color:#fff;border-color:#388bfd;}
 .dash-carousel-spacer{flex:1;}
-.dash-nav-arrow{width:34px;height:34px;border-radius:50%;background:#161b22;border:1px solid #30363d;color:#8b949e;font-size:16px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all .2s;}
+.dash-nav-arrow{width:32px;height:32px;border-radius:50%;background:#161b22;border:1px solid #30363d;color:#8b949e;font-size:15px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all .2s;}
 .dash-nav-arrow:hover{background:#1c2333;color:#e6edf3;border-color:#58a6ff;}
 
 .dash-view{display:none;animation:fadeIn .3s;}
 .dash-view.active{display:block;}
 
-.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin:12px 0;}
-.kpi{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px 14px;}
-.kpi .lbl{font-size:11px;letter-spacing:1px;color:#9aa4b2;text-transform:uppercase;}
-.kpi .val{font-size:28px;font-weight:800;margin:4px 0 2px;}
-.kpi .sub{font-size:11px;color:#9aa4b2;}
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:10px 0;}
+.kpi{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:10px 12px;}
+.kpi .lbl{font-size:10px;letter-spacing:1px;color:#9aa4b2;text-transform:uppercase;}
+.kpi .val{font-size:26px;font-weight:800;margin:3px 0 2px;}
+.kpi .sub{font-size:10px;color:#9aa4b2;}
 .kpi.ok .val{color:#3fd68f;}.kpi.bad .val{color:#ff6b6b;}.kpi.warn .val{color:#ffc861;}
-.kpi.big .val{font-size:42px;}
+.kpi.big .val{font-size:38px;}
 
-.dash-filter{display:flex;align-items:center;gap:12px;margin:10px 0 14px;flex-wrap:wrap;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:10px 14px;}
-.dash-filter label{font-size:14px;font-weight:600;}
-.dash-filter select{padding:7px 11px;font-size:14px;border-radius:6px;border:1px solid #30363d;background:#0d1117;color:#e6e6e6;}
-.dash-filter .chk{display:flex;align-items:center;gap:6px;font-size:13px;}
+.dash-filter{display:flex;align-items:center;gap:10px;margin:8px 0 12px;flex-wrap:wrap;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:8px 12px;}
+.dash-filter label{font-size:13px;font-weight:600;}
+.dash-filter select{padding:6px 10px;font-size:13px;border-radius:6px;border:1px solid #30363d;background:#0d1117;color:#e6edf3;}
+.dash-filter .chk{display:flex;align-items:center;gap:5px;font-size:12px;}
 
-.dash-body{display:grid;grid-template-columns:2.2fr 1fr;gap:14px;}
-.dash-panel{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px;}
-.dash-panel h3{margin:0 0 10px;font-size:15px;letter-spacing:1px;}
-#mlpTable{width:100%;border-collapse:collapse;font-size:13.5px;}
-#mlpTable th,#mlpTable td{padding:9px 10px;text-align:left;border-bottom:1px solid #262d38;white-space:nowrap;}
-#mlpTable th{background:#1f2630;color:#c9d1d9;font-weight:700;font-size:12px;letter-spacing:1px;}
+.dash-body{display:grid;grid-template-columns:1fr 380px;gap:12px;}
+.dash-panel{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px;}
+.dash-panel h3{margin:0 0 8px;font-size:14px;letter-spacing:1px;}
+#mlpTable{width:100%;border-collapse:collapse;font-size:12px;table-layout:auto;}
+#mlpTable th,#mlpTable td{padding:8px 9px;text-align:left;border-bottom:1px solid #262d38;white-space:nowrap;}
+#mlpTable th{background:#1f2630;color:#c9d1d9;font-weight:700;font-size:11px;letter-spacing:1px;position:sticky;top:0;z-index:5;}
 #mlpTable tr.mlpraw{cursor:pointer;}
 #mlpTable tr.mlpraw:hover{background:#1c2330;}
-#mlpTable td.mlpname{font-weight:800;color:#58a6ff;font-size:14px;}
-.bar{display:inline-block;height:9px;border-radius:5px;background:#ff6b6b;vertical-align:middle;}
-.barwrap{display:inline-block;width:60px;height:9px;background:#262d38;border-radius:5px;vertical-align:middle;margin-right:6px;}
-.badge{padding:3px 7px;border-radius:5px;font-weight:800;font-size:12px;}
+#mlpTable td.mlpname{font-weight:800;color:#58a6ff;font-size:13px;}
+.bar{display:inline-block;height:8px;border-radius:5px;background:#ff6b6b;vertical-align:middle;}
+.barwrap{display:inline-block;width:50px;height:8px;background:#262d38;border-radius:5px;vertical-align:middle;margin-right:5px;}
+.badge{padding:2px 6px;border-radius:5px;font-weight:800;font-size:11px;}
 .badge.g{background:#123f2a;color:#3fd68f;}.badge.y{background:#4a3b12;color:#ffc861;}.badge.r{background:#4a1a1a;color:#ff6b6b;}
-.badge-risk-mlp{padding:2px 8px;border-radius:10px;font-weight:800;font-size:11px;display:inline-block;margin-left:6px;}
+.badge-risk-mlp{padding:2px 7px;border-radius:10px;font-weight:800;font-size:10px;display:inline-block;margin-left:5px;}
 .badge-risk-mlp.high{background:#4a1a1a;color:#ff6b6b;}.badge-risk-mlp.med{background:#4a3b12;color:#ffc861;}.badge-risk-mlp.low{background:#123f2a;color:#3fd68f;}
 .badge-risk-mlp.none{background:#1c2333;color:#8b949e;}
-.detailrow td{background:#10151c;padding:12px;}
-.detailrow table{font-size:13px;}
+.detailrow td{background:#10151c;padding:10px;}
+.detailrow table{font-size:12px;}
 .detailrow th{background:#1f2630;position:static;}
-.side-block{margin-bottom:16px;}
-.side-block h4{margin:0 0 8px;font-size:13px;color:#9aa4b2;letter-spacing:1px;}
-.off-item{display:flex;align-items:center;gap:10px;padding:8px 4px;border-bottom:1px solid #262d38;font-size:13.5px;}
-.rank{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#fff;}
+.side-block{margin-bottom:14px;}
+.side-block h4{margin:0 0 6px;font-size:12px;color:#9aa4b2;letter-spacing:1px;}
+.off-item{display:flex;align-items:center;gap:8px;padding:7px 4px;border-bottom:1px solid #262d38;font-size:12.5px;}
+.rank{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;color:#fff;}
 .rank.r1{background:#e5484d;}.rank.r2{background:#f5a524;}.rank.r3{background:#ffb224;}.rank.r4{background:#6b7280;}
-.off-main{flex:1;}.off-main b{font-size:14px;}.off-sub{font-size:11px;color:#9aa4b2;}
-.off-right{text-align:right;font-size:12px;color:#9aa4b2;}.off-right b{color:#ff6b6b;font-size:14px;}
-.dash-footer{margin-top:12px;font-size:12px;color:#9aa4b2;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.off-main{flex:1;}.off-main b{font-size:13px;}.off-sub{font-size:10px;color:#9aa4b2;}
+.off-right{text-align:right;font-size:11px;color:#9aa4b2;}.off-right b{color:#ff6b6b;font-size:13px;}
+.dash-footer{margin-top:10px;font-size:11px;color:#9aa4b2;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;}
 
 /* Executive dashboard */
-.exec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px;}
-.exec-card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:20px;text-align:center;transition:transform .2s,border-color .2s;}
+.exec-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px;}
+.exec-card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:16px;text-align:center;transition:transform .2s,border-color .2s;}
 .exec-card:hover{transform:translateY(-2px);border-color:#484f58;}
-.exec-card .exec-icon{font-size:36px;margin-bottom:8px;}
-.exec-card .exec-val{font-size:48px;font-weight:900;line-height:1;margin:6px 0;}
-.exec-card .exec-lbl{font-size:13px;color:#8b949e;letter-spacing:1px;text-transform:uppercase;}
-.exec-card .exec-sub{font-size:12px;color:#6e7681;margin-top:4px;}
+.exec-card .exec-icon{font-size:32px;margin-bottom:6px;}
+.exec-card .exec-val{font-size:42px;font-weight:900;line-height:1;margin:5px 0;}
+.exec-card .exec-lbl{font-size:12px;color:#8b949e;letter-spacing:1px;text-transform:uppercase;}
+.exec-card .exec-sub{font-size:11px;color:#6e7681;margin-top:3px;}
 .exec-card.c-blue .exec-val{color:#58a6ff;}
 .exec-card.c-green .exec-val{color:#3fd68f;}
 .exec-card.c-red .exec-val{color:#ff6b6b;}
@@ -177,16 +177,20 @@ table.risk-summary th{background:#1c2333;color:#8b949e;font-weight:700;font-size
 .exec-card.c-purple .exec-val{color:#a371f7;}
 .exec-card.c-cyan .exec-val{color:#39d2c0;}
 
-@media(max-width:1100px){
+@media(max-width:1200px){
   .kpi-row{grid-template-columns:repeat(3,1fr);}
   .dash-body{grid-template-columns:1fr;}
-  .exec-grid{grid-template-columns:repeat(2,1fr);}
+  .exec-grid{grid-template-columns:repeat(3,1fr);}
 }
-@media(max-width:700px){
+@media(max-width:768px){
   .kpi-row{grid-template-columns:repeat(2,1fr);}
+  .exec-grid{grid-template-columns:repeat(2,1fr);}
+  .tab-btn{font-size:11px;padding:10px 6px;}
+  .dash-nav-btn{font-size:11px;padding:6px 9px;}
+}
+@media(max-width:600px){
   .exec-grid{grid-template-columns:1fr;}
-  .tab-btn{font-size:12px;padding:12px 6px;}
-  .dash-nav-btn{font-size:12px;padding:6px 10px;}
+  .risk-kpis{grid-template-columns:1fr 1fr;}
 }
 </style>
 </head>
@@ -194,12 +198,12 @@ table.risk-summary th{background:#1c2333;color:#8b949e;font-weight:700;font-size
 <div class="app">
 
 <header class="app-header">
-  <h1>🛠️ OTR LOS MEROS MEROS</h1>
-  <p>el mero hueso del caldo</p>
+  <h1>🛠️ OTR LOS MEROS MEROS — Centro de Control Logístico</h1>
+  <p>Extractor de datos · Dashboard MLP · Monitor de Rutas en Riesgo</p>
 </header>
 
 <nav class="tabs-nav">
-  <button class="tab-btn active" data-tab="extractor">📋 Extractor</button>
+  <button class="tab-btn active" data-tab="extractor"> Extractor</button>
   <button class="tab-btn" data-tab="risk">⚠️ Rutas en Riesgo <span class="tab-badge" id="riskBadge" style="display:none">0</span></button>
   <button class="tab-btn" data-tab="dash">📊 Dashboard</button>
 </nav>
@@ -216,8 +220,8 @@ table.risk-summary th{background:#1c2333;color:#8b949e;font-weight:700;font-size
   </div>
   <div class="btn-row">
     <button class="btn-green" id="processBtn">🔄 Procesar</button>
-    <button class="btn-cyan" id="downloadBtn">⬇️ Descargar CSV</button>
-    <button class="btn-blue" id="copyAssignBtn">📋 Copiar ASIGNACIÓN</button>
+    <button class="btn-cyan" id="downloadBtn">️ Descargar CSV</button>
+    <button class="btn-blue" id="copyAssignBtn"> Copiar ASIGNACIÓN</button>
     <button class="btn-blue" id="copySPORHBtn">📋 Copiar SPORH</button>
     <button class="btn-orange" id="copyReportBtn">📋 Copiar REPORTE CIERRE</button>
     <span id="copyStatus" class="copied-msg">✅ ¡Copiado al portapapeles!</span>
@@ -239,7 +243,7 @@ table.risk-summary th{background:#1c2333;color:#8b949e;font-weight:700;font-size
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
       <button class="btn-blue" id="riskCopyBtn">📋 Copiar Resumen Riesgo</button>
       <button class="btn-cyan" id="riskExportBtn">⬇️ Exportar CSV Riesgo</button>
-      <button class="btn-green" id="riskRefreshBtn">🔄 Recalcular</button>
+      <button class="btn-green" id="riskRefreshBtn"> Recalcular</button>
     </div>
   </div>
 
@@ -269,7 +273,7 @@ table.risk-summary th{background:#1c2333;color:#8b949e;font-weight:700;font-size
     <table class="risk-table"><thead id="riskThead"></thead><tbody id="riskTbody"></tbody></table>
   </div>
 
-  <div class="risk-section-title">📊 Resumen por Transportadora</div>
+  <div class="risk-section-title"> Resumen por Transportadora</div>
   <div class="risk-summary-wrap">
     <table class="risk-summary"><thead id="riskSumThead"></thead><tbody id="riskSumTbody"></tbody></table>
   </div>
@@ -314,15 +318,15 @@ table.risk-summary th{background:#1c2333;color:#8b949e;font-weight:700;font-size
       <button class="dash-nav-btn" data-dash="ejecutivo">🎯 Ejecutivo</button>
       <button class="dash-nav-arrow" id="dashNext" title="Siguiente">›</button>
       <div class="dash-carousel-spacer"></div>
-      <span style="font-size:12px;color:#8b949e;" id="dashCounter">1 / 5</span>
+      <span style="font-size:11px;color:#8b949e;" id="dashCounter">1 / 5</span>
     </div>
 
     <!-- Vista 1: MLP Overview -->
     <div class="dash-view active" id="view-mlp">
       <div class="dash-body">
         <div class="dash-panel">
-          <h3>🚚 MLP ORDENADOS POR FALLIDOS <span style="font-size:11px;color:#9aa4b2;">(clic para expandir · rutas en riesgo primero)</span></h3>
-          <div style="overflow:auto;max-height:600px;">
+          <h3>🚚 MLP ORDENADOS POR FALLIDOS <span style="font-size:10px;color:#9aa4b2;">(clic para expandir · rutas en riesgo primero)</span></h3>
+          <div style="overflow:auto;max-height:580px;">
             <table id="mlpTable"><thead id="mlpThead"></thead><tbody id="mlpTbody"></tbody></table>
           </div>
         </div>
@@ -337,8 +341,8 @@ table.risk-summary th{background:#1c2333;color:#8b949e;font-weight:700;font-size
     <!-- Vista 2: Top Rutas -->
     <div class="dash-view" id="view-rutas">
       <div class="dash-panel">
-        <h3>🚚 TOP RUTAS POR PENDIENTES <span style="font-size:11px;color:#9aa4b2;">(las rutas con más trabajo por delante)</span></h3>
-        <div style="overflow:auto;max-height:600px;">
+        <h3>🚚 TOP RUTAS POR PENDIENTES <span style="font-size:10px;color:#9aa4b2;">(las rutas con más trabajo por delante)</span></h3>
+        <div style="overflow:auto;max-height:580px;">
           <table id="topRutasTable"><thead id="topRutasThead"></thead><tbody id="topRutasTbody"></tbody></table>
         </div>
       </div>
@@ -347,8 +351,8 @@ table.risk-summary th{background:#1c2333;color:#8b949e;font-weight:700;font-size
     <!-- Vista 3: Productividad Drivers -->
     <div class="dash-view" id="view-drivers">
       <div class="dash-panel">
-        <h3>👤 PRODUCTIVIDAD DE CONDUCTORES <span style="font-size:11px;color:#9aa4b2;">(ranking por paquetes entregados)</span></h3>
-        <div style="overflow:auto;max-height:600px;">
+        <h3>👤 PRODUCTIVIDAD DE CONDUCTORES <span style="font-size:10px;color:#9aa4b2;">(ranking por paquetes entregados)</span></h3>
+        <div style="overflow:auto;max-height:580px;">
           <table id="driversTable"><thead id="driversThead"></thead><tbody id="driversTbody"></tbody></table>
         </div>
       </div>
@@ -357,8 +361,8 @@ table.risk-summary th{background:#1c2333;color:#8b949e;font-weight:700;font-size
     <!-- Vista 4: Análisis de Avance -->
     <div class="dash-view" id="view-avance">
       <div class="dash-panel">
-        <h3>📈 ANÁLISIS DE AVANCE <span style="font-size:11px;color:#9aa4b2;">(rutas más rezagadas primero)</span></h3>
-        <div style="overflow:auto;max-height:600px;">
+        <h3>📈 ANÁLISIS DE AVANCE <span style="font-size:10px;color:#9aa4b2;">(rutas más rezagadas primero)</span></h3>
+        <div style="overflow:auto;max-height:580px;">
           <table id="avanceTable"><thead id="avanceThead"></thead><tbody id="avanceTbody"></tbody></table>
         </div>
       </div>
@@ -369,7 +373,7 @@ table.risk-summary th{background:#1c2333;color:#8b949e;font-weight:700;font-size
       <div class="exec-grid" id="execGrid"></div>
       <div class="dash-panel">
         <h3>🎯 RESUMEN EJECUTIVO</h3>
-        <div id="execSummary" style="font-size:14px;line-height:1.8;color:#c9d1d9;"></div>
+        <div id="execSummary" style="font-size:13px;line-height:1.7;color:#c9d1d9;"></div>
       </div>
     </div>
 
@@ -401,7 +405,7 @@ let dashAgg = [];
 let expandedMLP = null;
 let riskData = [];
 let riskTimer = null;
-let allRoutesRisk = {}; // Mapa ID_Ruta -> {atRisk, riskPct, status, pqPerHour, estimatedDeliver}
+let allRoutesRisk = {};
 let currentDashView = 'mlp';
 const dashViews = ['mlp','rutas','drivers','avance','ejecutivo'];
 
@@ -644,7 +648,7 @@ document.getElementById('modalConfirmBtn').addEventListener('click',function(){
 });
 
 /* ================================================================
-   CALCULAR RIESGO DE TODAS LAS RUTAS (para dashboard)
+   CALCULAR RIESGO DE TODAS LAS RUTAS
    ================================================================ */
 function computeAllRoutesRisk(){
   const rtsMinutes = parseInt(document.getElementById('dashRtsSelect').value,10);
@@ -750,7 +754,6 @@ function aggregateByMLP(data){
     const drivers=Object.values(m.drivers).sort((a,b)=>b.fall-a.fall);
     const calif=(m.paq-m.fall)>0?(m.entr/(m.paq-m.fall)*100):0;
     const sinF=m.paq>0?((m.paq-m.fall)/m.paq*100):0;
-    // Calcular riesgo del MLP
     let riskHigh=0, riskMed=0, riskLow=0;
     routes.forEach(r => {
       const risk = allRoutesRisk[r.id];
@@ -802,11 +805,9 @@ function renderDash(){
   const sinF=totPaq>0?((totPaq-totFall)/totPaq*100):0;
   const critico=rows.length?rows[0]:null;
   const rtsLabel = document.getElementById('dashRtsSelect').options[document.getElementById('dashRtsSelect').selectedIndex].text;
-
-  // Total rutas en riesgo
   const totalRiskRoutes = rows.reduce((s,a) => s + a.riskHigh + a.riskMed, 0);
 
-  document.getElementById('dashSub').innerHTML=`${new Date().toLocaleString()} · ${totRutas} rutas · ${rows.length} MLP · RTS: <b style="color:#a371f7">${rtsLabel}</b> · MLP crítico: <b style="color:#ff6b6b">${critico?critico.mlp:'—'}</b> con ${critico?critico.fall:0} fallidos · ⚠️ <b style="color:#ffc861">${totalRiskRoutes}</b> rutas en riesgo`;
+  document.getElementById('dashSub').innerHTML=`${new Date().toLocaleString()} · ${totRutas} rutas · ${rows.length} MLP · RTS: <b style="color:#a371f7">${rtsLabel}</b> · MLP crítico: <b style="color:#ff6b6b">${critico?critico.mlp:'—'}</b> con ${critico?critico.fall:0} fallidos · ️ <b style="color:#ffc861">${totalRiskRoutes}</b> rutas en riesgo`;
 
   document.getElementById('kpiRow').innerHTML=`
     <div class="kpi ok"><div class="lbl">% Calificación</div><div class="val">${calif.toFixed(1)}%</div><div class="sub">Entregados ÷ (Total − Fallidos)</div></div>
@@ -816,7 +817,6 @@ function renderDash(){
     <div class="kpi warn"><div class="lbl">Pendientes</div><div class="val">${fmt(totPend)}</div><div class="sub">${totPaq>0?(totPend/totPaq*100).toFixed(1):0}% del total</div></div>
     <div class="kpi ok"><div class="lbl">% Sin fallidos</div><div class="val">${sinF.toFixed(1)}%</div><div class="sub">(Total − Fallidos) ÷ Total</div></div>`;
 
-  // Renderizar según la vista activa
   if(currentDashView === 'mlp') renderMLPView(rows);
   else if(currentDashView === 'rutas') renderTopRutasView(rows);
   else if(currentDashView === 'drivers') renderDriversView(rows);
@@ -831,12 +831,11 @@ function renderMLPView(rows){
   let body='';
   rows.forEach((a,i) => {
     const w=Math.round(a.fall/maxFall*100);
-    // Badge de riesgo
     let riskBadge = '';
     if(a.mlpRiskStatus === 'high'){
       riskBadge = `<span class="badge-risk-mlp high">🔴 ${a.riskHigh} alto${a.riskMed>0?' · 🟡 '+a.riskMed+' med':''}</span>`;
     } else if(a.mlpRiskStatus === 'med'){
-      riskBadge = `<span class="badge-risk-mlp med">🟡 ${a.riskMed} medio</span>`;
+      riskBadge = `<span class="badge-risk-mlp med"> ${a.riskMed} medio</span>`;
     } else if(a.mlpRiskStatus === 'low'){
       riskBadge = `<span class="badge-risk-mlp low">🟢 OK</span>`;
     } else {
@@ -867,7 +866,6 @@ function renderMLPView(rows){
 }
 
 function detailTable(a){
-  // Ordenar rutas: primero las que están en riesgo (high > med > low), luego por fallidos
   const sortedRoutes = [...a.routes].sort((x,y) => {
     const rx = allRoutesRisk[x.id] || {status:'low'};
     const ry = allRoutesRisk[y.id] || {status:'low'};
@@ -878,7 +876,7 @@ function detailTable(a){
     return y.fall - x.fall;
   });
 
-  let h=`<div style="font-size:13px;margin-bottom:8px;color:#9aa4b2;">Resumen: <b style="color:#58a6ff">${a.mlp}</b> — ${a.rutas} rutas · ⚠️ ${a.riskHigh} alto · 🟡 ${a.riskMed} medio · 🟢 ${a.riskLow} bajo</div>`;
+  let h=`<div style="font-size:12px;margin-bottom:6px;color:#9aa4b2;">Resumen: <b style="color:#58a6ff">${a.mlp}</b> — ${a.rutas} rutas · ️ ${a.riskHigh} alto ·  ${a.riskMed} medio · 🟢 ${a.riskLow} bajo</div>`;
   h+='<table><tr><th>ID_RUTA</th><th>DRIVER</th><th>PLACAS</th><th>TIPO</th><th>PAQ</th><th>ENTR.</th><th>FALL.</th><th>PEND.</th><th>%AVANCE</th><th>⚠️ RIESGO</th><th>ESTADO</th></tr>';
   sortedRoutes.forEach(r=>{
     const risk = allRoutesRisk[r.id];
@@ -914,7 +912,7 @@ function renderTopRutasView(rows){
     const risk = allRoutesRisk[r.id] || {atRisk:0, riskPct:0, status:'low'};
     const status = risk.status;
     const rowClass = status === 'high' ? 'risk-high' : (status === 'med' ? 'risk-med' : 'risk-low');
-    const riskLabel = status === 'high' ? '🔴 ALTO' : (status === 'med' ? '🟡 MEDIO' : '🟢 BAJO');
+    const riskLabel = status === 'high' ? ' ALTO' : (status === 'med' ? '🟡 MEDIO' : ' BAJO');
     const badgeClass = status;
 
     html += `<tr class="${rowClass}">
@@ -930,7 +928,7 @@ function renderTopRutasView(rows){
       <td>${r.pct}</td>
       <td style="font-weight:800;color:${risk.atRisk>0?'#ff6b6b':'#3fd68f'};">${risk.atRisk}</td>
       <td><span class="badge-risk ${badgeClass}">${riskLabel}</span></td>
-      <td style="font-size:12px;color:#8b949e;">${r.estado}</td>
+      <td style="font-size:11px;color:#8b949e;">${r.estado}</td>
     </tr>`;
   });
   document.getElementById('topRutasTbody').innerHTML = html;
@@ -997,7 +995,6 @@ function renderDriversView(rows){
 /* ============ Vista 4: Análisis de Avance ============ */
 function renderAvanceView(rows){
   const allRoutes = rows.flatMap(a => a.routes.map(r => Object.assign({}, r, {mlp:a.mlp})));
-  // Ordenar por % avance ascendente (los más rezagados primero)
   allRoutes.sort((a,b) => {
     const pa = parseFloat(String(a.pct).replace(/[^0-9.]/g,'')) || 0;
     const pb = parseFloat(String(b.pct).replace(/[^0-9.]/g,'')) || 0;
@@ -1020,7 +1017,7 @@ function renderAvanceView(rows){
     const risk = allRoutesRisk[r.id] || {atRisk:0, riskPct:0, status:'low'};
     const status = risk.status;
     const rowClass = status === 'high' ? 'risk-high' : (status === 'med' ? 'risk-med' : 'risk-low');
-    const riskLabel = status === 'high' ? '🔴 ALTO' : (status === 'med' ? '🟡 MEDIO' : '🟢 BAJO');
+    const riskLabel = status === 'high' ? '🔴 ALTO' : (status === 'med' ? ' MEDIO' : '🟢 BAJO');
     const badgeClass = status;
     const pctNum = parseFloat(String(r.pct).replace(/[^0-9.]/g,'')) || 0;
     const pctColor = pctNum >= 80 ? '#3fd68f' : (pctNum >= 50 ? '#ffc861' : '#ff6b6b');
@@ -1037,7 +1034,7 @@ function renderAvanceView(rows){
       <td>${r.paq}</td>
       <td style="font-weight:800;color:${risk.atRisk>0?'#ff6b6b':'#3fd68f'};">${risk.atRisk}</td>
       <td><span class="badge-risk ${badgeClass}">${riskLabel}</span></td>
-      <td style="font-size:12px;color:#8b949e;">${r.estado}</td>
+      <td style="font-size:11px;color:#8b949e;">${r.estado}</td>
     </tr>`;
   });
   document.getElementById('avanceTbody').innerHTML = html;
@@ -1046,14 +1043,9 @@ function renderAvanceView(rows){
 /* ============ Vista 5: Ejecutivo ============ */
 function renderEjecutivoView(rows, stats){
   const {totPaq,totEntr,totFall,totPend,totRutas,calif,sinF,totalRiskRoutes} = stats;
-
-  // Contar MLPs con riesgo
   const mlpWithRisk = rows.filter(a => a.mlpRiskStatus === 'high' || a.mlpRiskStatus === 'med').length;
   const mlpClean = rows.length - mlpWithRisk;
-
-  // Promedio de paquetes por ruta
   const avgPaqPerRoute = totRutas > 0 ? (totPaq / totRutas) : 0;
-  // Promedio de fallidos por ruta
   const avgFallPerRoute = totRutas > 0 ? (totFall / totRutas) : 0;
 
   document.getElementById('execGrid').innerHTML = `
@@ -1115,7 +1107,7 @@ function renderEjecutivoView(rows, stats){
 
   const rtsLabel = document.getElementById('dashRtsSelect').options[document.getElementById('dashRtsSelect').selectedIndex].text;
   document.getElementById('execSummary').innerHTML = `
-    <div style="background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:14px;margin-bottom:12px;">
+    <div style="background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:12px;margin-bottom:10px;">
       <b style="color:#58a6ff;">📊 Resumen Ejecutivo</b> — ${new Date().toLocaleString()}<br>
       <b style="color:#a371f7;">RTS activo:</b> ${rtsLabel}<br><br>
       Se están monitoreando <b style="color:#58a6ff;">${totRutas} rutas</b> distribuidas en <b>${rows.length} transportadoras (MLP)</b>,
@@ -1125,7 +1117,7 @@ function renderEjecutivoView(rows, stats){
       y quedan <b style="color:#ffc861;">${fmt(totPend)} pendientes</b> (${(totPend/totPaq*100).toFixed(1)}%).<br><br>
       La <b>calificación global</b> es de <b style="color:${calif>=90?'#3fd68f':(calif>=80?'#ffc861':'#ff6b6b')};">${calif.toFixed(1)}%</b>
       y el <b>% sin fallidos</b> es <b style="color:${sinF>=95?'#3fd68f':(sinF>=85?'#ffc861':'#ff6b6b')};">${sinF.toFixed(1)}%</b>.<br><br>
-      ⚠️ <b style="color:#ffc861;">${totalRiskRoutes} rutas</b> están en riesgo de no cumplir el RTS
+      ️ <b style="color:#ffc861;">${totalRiskRoutes} rutas</b> están en riesgo de no cumplir el RTS
       (${totalRiskRoutes>0?'distribuidas en '+mlpWithRisk+' MLPs':'ningún MLP afectado'}).
       ${mlpClean>0?'<b style="color:#3fd68f;">'+mlpClean+' MLPs</b> se mantienen limpios.':''}
     </div>
@@ -1135,7 +1127,7 @@ function renderEjecutivoView(rows, stats){
 function formatDashResumen(rows){
   let r='MLP\tRUTAS\tPAQ\tENTR\tFALLIDOS\tPEND\t%CALIF\t%SIN_FALL\tRIESGO\tRUTA_MAYOR_IMPACTO\tDRIVER_MAYOR_IMPACTO';
   rows.forEach(a=>{
-    const riskTxt = a.mlpRiskStatus==='high'?`🔴${a.riskHigh}🟡${a.riskMed}`:(a.mlpRiskStatus==='med'?`🟡${a.riskMed}`:(a.mlpRiskStatus==='low'?'🟢':'—'));
+    const riskTxt = a.mlpRiskStatus==='high'?`🔴${a.riskHigh}🟡${a.riskMed}`:(a.mlpRiskStatus==='med'?`🟡${a.riskMed}`:(a.mlpRiskStatus==='low'?'':'—'));
     r+=`\n${a.mlp}\t${a.rutas}\t${a.paq}\t${a.entr}\t${a.fall}\t${a.pend}\t${a.calif.toFixed(1)}%\t${a.sinF.toFixed(1)}%\t${riskTxt}\t${a.rutaImpacto?a.rutaImpacto.id:''}\t${a.driverImpacto?a.driverImpacto.name:''}`;
   });
   return r;
@@ -1243,11 +1235,11 @@ function renderRiskKPIs(hrsRemaining, rtsMins){
 
   document.getElementById('riskKpis').innerHTML = `
     <div class="rkpi blue"><div class="rkpi-lbl">🕐 Hora Actual</div><div class="rkpi-val">${nowTimeString()}</div><div class="rkpi-sub">Última actualización</div></div>
-    <div class="rkpi purple"><div class="rkpi-lbl">🎯 RTS</div><div class="rkpi-val" style="font-size:20px;">${minutesToHHMM(rtsMins)}</div><div class="rkpi-sub">${rtsLabel}</div></div>
+    <div class="rkpi purple"><div class="rkpi-lbl">🎯 RTS</div><div class="rkpi-val" style="font-size:18px;">${minutesToHHMM(rtsMins)}</div><div class="rkpi-sub">${rtsLabel}</div></div>
     <div class="rkpi ${hrsClass}"><div class="rkpi-lbl">⏳ Hrs Restantes RTS</div><div class="rkpi-val">${hrsRemaining <= 0 ? 'VENCIDO' : hrsRemaining.toFixed(1)}</div><div class="rkpi-sub">${hrsRemaining > 0 ? Math.floor(hrsRemaining)+'h '+Math.round((hrsRemaining%1)*60)+'m' : 'Tiempo agotado'}</div></div>
     <div class="rkpi cyan"><div class="rkpi-lbl">🚚 Rutas Activas</div><div class="rkpi-val">${totalRutas}</div><div class="rkpi-sub">En seguimiento</div></div>
     <div class="rkpi yellow"><div class="rkpi-lbl">📦 Pendientes</div><div class="rkpi-val">${fmt(totalPend)}</div><div class="rkpi-sub">${fmt(totalEntr)} entregados</div></div>
-    <div class="rkpi ${riskClass}"><div class="rkpi-lbl">⚠️ En Riesgo</div><div class="rkpi-val">${fmt(totalRisk)}</div><div class="rkpi-sub">${riskPctTotal.toFixed(1)}% del pendiente</div></div>
+    <div class="rkpi ${riskClass}"><div class="rkpi-lbl">️ En Riesgo</div><div class="rkpi-val">${fmt(totalRisk)}</div><div class="rkpi-sub">${riskPctTotal.toFixed(1)}% del pendiente</div></div>
     <div class="rkpi green"><div class="rkpi-lbl">📊 Prom. Pq/Hora</div><div class="rkpi-val">${avgPqHVal.toFixed(1)}</div><div class="rkpi-sub">Entregados ÷ ORH</div></div>
     <div class="rkpi blue"><div class="rkpi-lbl">✅ Estimado Entregar</div><div class="rkpi-val">${fmt(riskData.reduce((s,r)=>s+r.estimatedDeliver,0))}</div><div class="rkpi-sub">Antes del RTS</div></div>
   `;
@@ -1291,10 +1283,10 @@ function renderRiskTable(){
       <td>${mpdStr}</td>
       <td style="font-weight:700;color:${r.hrsRemainingRTS<=0?'#ff6b6b':'#58a6ff'};">${hrsStr}</td>
       <td>${r.estimatedDeliver}</td>
-      <td style="font-weight:800;color:${r.atRisk>0?'#ff6b6b':'#3fd68f'};font-size:15px;">${r.atRisk}</td>
+      <td style="font-weight:800;color:${r.atRisk>0?'#ff6b6b':'#3fd68f'};font-size:14px;">${r.atRisk}</td>
       <td><span class="risk-bar-wrap"><span class="risk-bar ${barClass}" style="width:${barW}%"></span></span>${r.riskPct.toFixed(0)}%</td>
       <td><span class="badge-risk ${badgeClass}">${riskLabel}</span></td>
-      <td style="font-size:12px;color:#8b949e;">${r.estado}</td>
+      <td style="font-size:11px;color:#8b949e;">${r.estado}</td>
     </tr>`;
   });
   document.getElementById('riskTbody').innerHTML = html;
@@ -1333,7 +1325,7 @@ function renderRiskSummary(){
       <td>${a.pend}</td>
       <td style="color:#3fd68f;">${a.entr}</td>
       <td>${a.est}</td>
-      <td style="font-weight:800;color:#ff6b6b;font-size:15px;">${a.risk}</td>
+      <td style="font-weight:800;color:#ff6b6b;font-size:14px;">${a.risk}</td>
       <td><span class="risk-bar-wrap"><span class="risk-bar ${status}" style="width:${barW}%"></span></span>${pct.toFixed(0)}%</td>
       <td><span class="badge-risk ${status}">${label}</span></td>
     </tr>`;
